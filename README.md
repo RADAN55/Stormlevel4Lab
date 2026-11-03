@@ -87,33 +87,6 @@ sit in Reading and Writing.
 
 Chromebook friendly. No account, no sign-in, no data leaves the device.
 
-## Grading student work
-
-W2, W3 and W4 each carry a **Teacher · Grade a student response** panel, sitting directly
-below the student's own writing box and above the sample responses. Paste an answer — or press
-**Pull in the response above** to grade what the student just typed — and it returns a
-four-row rubric scored 1–4, tailored to that task:
-
-| Task | Rows |
-|---|---|
-| W2 | Content and detail · Location and action language · Organization · Sentence control |
-| W3 | Register for the reader · Completeness of the request · Organization · Sentence control |
-| W4 | Claim · Evidence from the sources · Counterargument · Sentence control |
-
-Every row is a suggestion drawn from countable features of the writing, and every row is a
-button you can change before you record anything. The overall number updates as you adjust.
-Under the rubric is a feedback line naming the strongest row and the single next step for the
-weakest, which you can copy straight into a comment.
-
-**Add to class list** saves name, overall, and the four row scores. The list shows how many
-you have graded, the class average, and the row that comes up weakest most often — which is
-the one to teach next. **Copy the list** gives you tab-separated rows that paste into a
-spreadsheet or a gradebook.
-
-The rubric is a practice estimate, not an ELPA21 score, and the panel says so on screen.
-Saved lists live in that browser only and survive **Clear progress**, which resets student
-progress and leaves grading alone.
-
 ## Teacher notes
 
 - Works as a bell ringer (one task), a station rotation (one domain), or an intervention block
@@ -124,6 +97,10 @@ progress and leaves grading alone.
   class to find the four things the rater is counting.
 - The coaches are original illustrations drawn in SVG inside `index.html`. They are not real
   staff and are not photographs of anyone.
+- The writing rubric rows are task-specific: content and location language on W2, register and
+  completeness on W3, claim, evidence and counterargument on W4, plus shared organization and
+  sentence-control rows. Students see the score and the next step; there is no separate
+  teacher view, so whatever a student sees is what you see over their shoulder.
 
 ## Practice content
 
