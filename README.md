@@ -83,8 +83,10 @@ Chromebook friendly. No account, no sign-in, no data leaves the device.
 
 ## Grading student work
 
-W2, W3 and W4 each carry a **Teacher · Grade a student response** panel. Paste a student's
-answer and it returns a four-row rubric scored 1–4, tailored to that task:
+W2, W3 and W4 each carry a **Teacher · Grade a student response** panel, sitting directly
+below the student's own writing box and above the sample responses. Paste an answer — or press
+**Pull in the response above** to grade what the student just typed — and it returns a
+four-row rubric scored 1–4, tailored to that task:
 
 | Task | Rows |
 |---|---|
