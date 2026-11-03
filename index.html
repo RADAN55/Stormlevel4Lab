@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with four animated domain coaches and side-by-side Level 3, 4 and 5 sample responses. EL Publishing / Storm Studio.">
+<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with animated domain coaches, Level 3/4/5 sample responses, and a teacher rubric grader for the writing tasks. EL Publishing / Storm Studio.">
 <meta name="author" content="Richard A. Daniel, M.Ed. - EL Publishing">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E2761'/%3E%3Crect x='9' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='20' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='11' y='20' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='15' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='10' width='10' height='2.6' rx='1.3' fill='%23F3F4FA'/%3E%3C/svg%3E">
 <style>
@@ -192,6 +192,24 @@ textarea:focus{border-color:var(--accent)}
 .notes.miss li::before{content:"○";color:var(--bad)}
 .notes.has li::before{content:"✓";color:var(--good)}
 .xnote{margin-top:13px;color:var(--muted);font-size:14px;line-height:1.6;max-width:66ch}
+input.nm{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:9px 11px;font-family:var(--body);font-size:14.5px;flex:1 1 230px;min-width:0}
+input.nm:focus{border-color:var(--accent)}
+.score{margin-top:14px;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:15px}
+.scorehead{display:flex;align-items:center;gap:13px;flex-wrap:wrap;margin-bottom:6px}
+.scorehead .big{font-family:var(--data);font-size:32px;font-weight:600;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.scorehead .cap{font-size:13.5px;color:var(--muted);flex:1 1 180px;min-width:0;line-height:1.45}
+.dim{border-top:1px solid var(--line);padding:11px 0;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.dim .dname{flex:1 1 160px;min-width:0;font-weight:600;font-size:14.5px}
+.lv{display:flex;gap:5px;flex:none}
+.lv button{width:33px;height:31px;border:1px solid var(--line);background:var(--surface);border-radius:6px;font-family:var(--data);font-size:13px;font-weight:600;color:var(--muted)}
+.lv button.on{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.lv button:hover:not(.on){border-color:var(--accent);color:var(--ink)}
+.dsay{flex:1 1 100%;font-size:13.5px;color:var(--muted);line-height:1.5}
+.fb{border-top:1px solid var(--line);padding-top:13px}
+.fbtext{font-size:14.5px;line-height:1.6;max-width:62ch;margin:7px 0 11px}
+.clist{margin-top:13px;border-top:1px solid var(--line);padding-top:12px;font-size:14px;color:var(--muted);line-height:1.6}
+.clist b{color:var(--ink);font-weight:600}
+.clist .roll{font-family:var(--data);font-size:12.5px;margin-top:6px;line-height:1.8}
 .audio{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .astat{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.04em}
 .script{background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:13px;font-size:15.5px;line-height:1.7;max-width:66ch}
@@ -268,8 +286,9 @@ footer .wrap{padding-block:22px 34px;font-size:13px;color:var(--muted);display:f
 
 /* ============================ storage ============================ */
 const KEY="level4lab.v1";
-let state={done:{}};
-try{const r=localStorage.getItem(KEY); if(r) state=Object.assign({done:{}},JSON.parse(r));}catch(e){}
+let state={done:{},graded:{}};
+try{const r=localStorage.getItem(KEY); if(r) state=Object.assign({done:{},graded:{}},JSON.parse(r));}catch(e){}
+if(!state.graded) state.graded={};
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 function mark(id){ if(!state.done[id]){ state.done[id]=1; save(); renderChips(); } }
 
@@ -844,7 +863,7 @@ function renderTask(t){
   const interactive=t.steps.filter(s=>s.type!=="read"&&s.type!=="listen"&&s.type!=="figure");
   let answered=0;
   const bump=()=>{ answered++; if(answered>=interactive.length){ mark(t.id); showDone(t); } };
-  t.steps.forEach((s,i)=>host.appendChild(buildStep(s,i,bump)));
+  t.steps.forEach((s,i)=>host.appendChild(buildStep(s,i,bump,t)));
   if(state.done[t.id]) showDone(t,true);
   window.scrollTo(0,0);
 }
@@ -868,7 +887,7 @@ function showDone(t,quiet){
 
 function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstElementChild; }
 
-function buildStep(s,i,done){
+function buildStep(s,i,done,task){
   const box=document.createElement("div"); box.className="step";
   if(s.type==="read"){
     box.innerHTML=`<span class="lab">Text ${s.title?"· "+s.title:""}</span><div class="passage">${s.html}</div>`;
@@ -886,7 +905,7 @@ function buildStep(s,i,done){
   if(s.type==="evidence") return buildEvidence(box,s,done);
   if(s.type==="combine")  return buildCombine(box,s,done);
   if(s.type==="speak")    return buildSpeak(box,s,done);
-  if(s.type==="write")    return buildWrite(box,s,done);
+  if(s.type==="write")    return buildWrite(box,s,done,task);
   return box;
 }
 
@@ -1055,6 +1074,190 @@ function buildSpeak(box,s,done){
   return box;
 }
 
+/* ---- rubric grading (teacher) ---- */
+function sentList(t){ return t.split(/[.!?]+/).map(x=>x.trim()).filter(x=>words(x)>=2); }
+function openers(t){
+  return new Set(sentList(t).map(x=>(x.match(/[A-Za-z'’]+(\s+[A-Za-z'’]+)?/)||[""])[0].toLowerCase()).filter(Boolean)).size;
+}
+function avgLen(t){ const L=sentList(t); return L.length ? words(t)/L.length : 0; }
+/* distinct linker TYPES, not occurrences — three "and"s is not organization */
+const RX_LINK=/\b(because|although|though|however|therefore|so that|for example|for instance|in addition|on the other hand|while|even though|as a result|since|instead|and|but|so|then|also|first|second|finally)\b/gi;
+function linkTypes(t){
+  const m=t.match(new RegExp(RX_LINK.source,"gi"))||[];
+  return new Set(m.map(x=>x.toLowerCase())).size;
+}
+
+const DIM_ORG={ name:"Organization and connectives",
+  band:t=>{ const c=linkTypes(t), o=openers(t); return (c>=3&&o>=3)?4:(c>=2&&o>=3)?3:(c>=1)?2:1; },
+  say:{4:"Three or more connectives, and sentences do not all open the same way.",
+       3:"Two connectives joining ideas.",
+       2:"One connective; most sentences stand on their own.",
+       1:"Ideas listed one after another with nothing joining them."},
+  next:{1:"One connective at a time, starting with <i>because</i>.",
+        2:"Push for a second connective — <i>although</i> or <i>however</i>.",
+        3:"Add a third, and vary how sentences begin."}};
+
+const DIM_CTRL={ name:"Sentence control",
+  band:t=>{ const L=sentList(t).length, o=openers(t), a=avgLen(t), s=linkTypes(t);
+    return (L>=4&&o>=4&&a>=12&&s>=2)?4:(L>=3&&o>=3&&a>=9&&s>=1)?3:(L>=2&&a>=6)?2:1; },
+  say:{4:"Four or more sentences, varied openings, clauses combined.",
+       3:"Three or more sentences with some combining.",
+       2:"Short simple sentences with little variation.",
+       1:"A single sentence, or fragments."},
+  next:{1:"Sentence frames. Build one complete sentence before combining any.",
+        2:"Run task W1 — combine two short sentences into one.",
+        3:"Vary the openings; do not start three sentences in a row the same way."}};
+
+const RUBRICS={
+ w2:{dims:[
+  { name:"Content and detail",
+    band:t=>{ const s=sentList(t).length, w=words(t); return (w>=60&&s>=4)?4:(w>=45&&s>=3)?3:(w>=25&&s>=2)?2:1; },
+    say:{4:"The whole scene, with specific objects and people.",3:"Most of the scene, three or four sentences.",2:"Two or three sentences naming parts of it.",1:"One or two short statements."},
+    next:{1:"Point at four things in the picture and name each one aloud first.",2:"Set a floor of four sentences before writing anything.",3:"Add the detail nobody else would notice."}},
+  { name:"Location and action language",
+    band:t=>{ const p=countRx(t,RX.place), g=RX.progressive.test(t); return (p>=3&&g)?4:(p>=2&&g)?3:(p>=1||g)?2:1; },
+    say:{4:"Three or more location phrases, and the action is in progress.",3:"Two location phrases with present progressive.",2:"Either location or action, not both.",1:"Neither — the description is a list of nouns."},
+    next:{1:"Two questions on the board: where is it, and what is happening right now.",2:"Add the missing half — if there are places, add <i>is</i> + <i>-ing</i>.",3:"One more location phrase, between or across from."}},
+  DIM_ORG, DIM_CTRL]},
+
+ w3:{dims:[
+  { name:"Register for the reader",
+    band:t=>{ let n=0; if(RX.greeting.test(t.trim())) n++; if(RX.polite.test(t)) n++; if(RX.closing.test(t)) n++; if(!RX.slang.test(t)) n++;
+      return n>=4?4:n===3?3:n===2?2:1; },
+    say:{4:"Greeting, formal request frame, closing, and no casual words.",3:"Three of the four register markers.",2:"Two of the four.",1:"Reads like a text message to a friend."},
+    next:{1:"Start with the greeting and the closing. Those two are free points.",2:"Swap the request into <i>Would it be possible</i> or <i>I am writing to ask</i>.",3:"Find the one missing piece — usually the closing."}},
+  { name:"Completeness of the request",
+    band:t=>{ let n=0;
+      if(/\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|may|june|july|august|september|october|november|december)\b/i.test(t)) n++;
+      if(/\b\d{1,2}(:\d{2})?\s*(a\.?m\.?|p\.?m\.?|o'clock)/i.test(t)||/\b\d{1,2}:\d{2}\b/.test(t)) n++;
+      if(RX.because.test(t)) n++;
+      if(/\b(permission|excused?|leave|allow|request|attend)\b/i.test(t)) n++;
+      return n>=4?4:n===3?3:n>=1?2:1; },
+    say:{4:"Day, time, reason, and what is being asked for — all four.",3:"Three of the four; the reader would need one detail.",2:"One or two; the reader has to write back to ask.",1:"The request itself is not clear."},
+    next:{1:"Name the thing being asked for in the first sentence.",2:"Add the day and the time. A reader cannot say yes without them.",3:"Add the missing piece — usually the exact time."}},
+  DIM_ORG, DIM_CTRL]},
+
+ w4:{dims:[
+  { name:"Claim",
+    band:t=>{ const first=sentList(t).slice(0,2).join(". ");
+      if(RX.claim.test(first)) return 4;
+      if(RX.claim.test(t)) return 3;
+      if(/\b(better|best|good idea|bad idea|makes sense)\b/i.test(t)) return 2;
+      return 1; },
+    say:{4:"A position taken in the first two sentences.",3:"A position, but the reader waits for it.",2:"A leaning, never stated outright.",1:"No position — the sources are summarized instead."},
+    next:{1:"Write the position as sentence one before anything else.",2:"Turn the leaning into a sentence with <i>should</i>.",3:"Move the claim to the opening."}},
+  { name:"Evidence from the sources",
+    band:t=>{ const a=/\bsource a\b/i.test(t), b=/\bsource b\b/i.test(t), e=RX.evidence.test(t);
+      return (a&&b&&e)?4:(e&&(a||b))?3:e?2:1; },
+    say:{4:"Both sources named, with evidence attributed.",3:"One source named and used.",2:"Evidence language, but no source named.",1:"Opinion only — nothing from the sources."},
+    next:{1:"Highlight one line in each source, then write from the highlights.",2:"Add the source name: <i>According to Source A…</i>",3:"Bring in the second source. One source caps this at a 3."}},
+  { name:"Counterargument",
+    band:t=>{ const c=RX.concession.test(t);
+      const answered=c&&/\b(but|however|still|even so|the difference is|that is why|yet|although)\b/i.test(t);
+      if(answered) return 4; if(c) return 3;
+      if(/\bsome (people|teachers|families|students|parents)\b/i.test(t)) return 2;
+      return 1; },
+    say:{4:"The other side is stated and then answered.",3:"A concession is there but left hanging.",2:"Disagreement mentioned without its reason.",1:"The other side does not appear."},
+    next:{1:"One clause: <i>Although Source B is right that…</i>",2:"Give the other side its actual reason, not just that it exists.",3:"Answer the concession — say why your side still holds."}},
+  DIM_CTRL]}
+};
+
+function gradeOf(rub,text){ return rub.dims.map(d=>d.band(text)); }
+function overall(scores){ return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length); }
+function feedbackText(rub,scores){
+  let hi=0, lo=0;
+  scores.forEach((v,i)=>{ if(v>scores[hi]) hi=i; if(v<scores[lo]) lo=i; });
+  const strip=s=>s.replace(/<[^>]+>/g,"");
+  const strength=`Strength — ${rub.dims[hi].name.toLowerCase()}: ${strip(rub.dims[hi].say[scores[hi]]).replace(/^./,c=>c.toLowerCase())}`;
+  const step = scores[lo]>=4 ? "Next: hold this same shape on a longer prompt."
+             : `Next — ${rub.dims[lo].name.toLowerCase()}: ${strip(rub.dims[lo].next[scores[lo]])}`;
+  return strength+" "+step;
+}
+
+function buildGrader(task,step){
+  const rub=RUBRICS[task.id]; if(!rub) return "";
+  return `<details class="model grader">
+    <summary>Teacher · Grade a student response</summary>
+    <div class="mbody">
+      <div class="row" style="margin-bottom:9px"><input class="nm" type="text" id="nm-${task.id}" placeholder="Student name or initials (optional)"></div>
+      <textarea class="gta" id="gta-${task.id}" placeholder="Paste or type the student's response."></textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" type="button" data-g="score">Score it</button>
+        <button class="btn ghost" type="button" data-g="clear">Clear</button>
+      </div>
+      <div class="scorehost"></div>
+      <div class="clisthost"></div>
+    </div></details>`;
+}
+
+function wireGrader(box,task){
+  const rub=RUBRICS[task.id]; if(!rub) return;
+  const g=box.querySelector(".grader"); if(!g) return;
+  const ta=g.querySelector(".gta"), nm=g.querySelector(".nm");
+  const host=g.querySelector(".scorehost"), clh=g.querySelector(".clisthost");
+  let scores=null;
+
+  function drawList(){
+    const rows=(state.graded[task.id]||[]);
+    if(!rows.length){ clh.innerHTML=`<div class="clist">No responses saved yet. Scored responses stay in this browser.</div>`; return; }
+    const avg=(rows.reduce((a,r)=>a+r.level,0)/rows.length).toFixed(1);
+    const tally={};
+    rows.forEach(r=>{ let lo=0; r.dims.forEach((v,i)=>{ if(v<r.dims[lo]) lo=i; }); tally[lo]=(tally[lo]||0)+1; });
+    let worst=0; Object.keys(tally).forEach(k=>{ if(tally[k]>tally[worst]) worst=k; });
+    clh.innerHTML=`<div class="clist">
+      <b>${rows.length}</b> saved · average <b>${avg}</b> · most common gap: <b>${rub.dims[worst].name.toLowerCase()}</b>
+      <div class="roll">${rows.map(r=>`${(r.name||"—").slice(0,22)} · ${r.level} · ${r.dims.join("/")}`).join("<br>")}</div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost" type="button" data-g="copylist">Copy the list</button>
+        <button class="btn ghost" type="button" data-g="wipe">Clear the list</button>
+      </div></div>`;
+    clh.querySelector('[data-g="copylist"]').addEventListener("click",e=>{
+      const txt=`${task.title} — ${rub.dims.map(d=>d.name).join(" / ")}\n`+
+        rows.map(r=>`${r.name||"(no name)"}\t${r.level}\t${r.dims.join("\t")}`).join("\n");
+      copy(txt,e.target);
+    });
+    clh.querySelector('[data-g="wipe"]').addEventListener("click",()=>{
+      state.graded[task.id]=[]; save(); drawList();
+    });
+  }
+  function copy(txt,btn){
+    const old=btn.textContent;
+    try{ navigator.clipboard.writeText(txt).then(()=>{ btn.textContent="Copied"; setTimeout(()=>btn.textContent=old,1400); },
+      ()=>{ btn.textContent="Select it and copy"; setTimeout(()=>btn.textContent=old,2200); }); }
+    catch(e){ btn.textContent="Select it and copy"; setTimeout(()=>btn.textContent=old,2200); }
+  }
+  function draw(){
+    const lvl=overall(scores);
+    host.innerHTML=`<div class="score">
+      <div class="scorehead"><span class="lab">Suggested</span><span class="big">${lvl}</span>
+        <span class="cap">A practice estimate from countable features, not an ELPA21 score. Change any row before you record it.</span></div>
+      ${rub.dims.map((d,i)=>`<div class="dim" data-i="${i}">
+         <span class="dname">${d.name}</span>
+         <span class="lv">${[1,2,3,4].map(n=>`<button type="button" data-n="${n}"${n===scores[i]?' class="on"':''}>${n}</button>`).join("")}</span>
+         <span class="dsay">${d.say[scores[i]]}</span></div>`).join("")}
+      <div class="fb"><p class="nh">Feedback to give</p><p class="fbtext">${feedbackText(rub,scores)}</p>
+        <div class="row"><button class="btn ghost" type="button" data-g="copyfb">Copy the feedback</button>
+          <button class="btn" type="button" data-g="save">Add to class list</button></div></div>
+    </div>`;
+    host.querySelectorAll(".dim").forEach(row=>{
+      const i=+row.dataset.i;
+      row.querySelectorAll(".lv button").forEach(b=>b.addEventListener("click",()=>{ scores[i]=+b.dataset.n; draw(); }));
+    });
+    host.querySelector('[data-g="copyfb"]').addEventListener("click",e=>copy(feedbackText(rub,scores),e.target));
+    host.querySelector('[data-g="save"]').addEventListener("click",e=>{
+      (state.graded[task.id]=state.graded[task.id]||[]).push({name:(nm.value||"").trim(),level:overall(scores),dims:scores.slice()});
+      save(); drawList(); e.target.textContent="Added"; setTimeout(()=>e.target.textContent="Add to class list",1400);
+    });
+  }
+  g.querySelector('[data-g="score"]').addEventListener("click",()=>{
+    const t=ta.value.trim();
+    if(words(t)<5){ host.innerHTML=`<div class="why no"><b>Paste a response first.</b> The rubric needs at least a full sentence to read.</div>`; return; }
+    scores=gradeOf(rub,t); draw();
+  });
+  g.querySelector('[data-g="clear"]').addEventListener("click",()=>{ ta.value=""; nm.value=""; host.innerHTML=""; scores=null; });
+  drawList();
+}
+
 /* ---- level comparison ---- */
 function compareHTML(s){
   if(!s.compare){
@@ -1088,15 +1291,17 @@ function wireCompare(box){
 }
 
 /* ---- writing ---- */
-function buildWrite(box,s,done){
+function buildWrite(box,s,done,task){
   const id="ta-"+Math.random().toString(36).slice(2,8);
   box.innerHTML=`<span class="lab">Write it</span><p class="q">${s.prompt}</p>
     <textarea id="${id}" placeholder="Write your answer here."></textarea>
     <p class="counts" style="margin-top:7px"></p>
     <div class="row" style="margin-top:10px"><button class="btn" type="button" data-a="check">Check my signals</button></div>
     <div class="meterhost"></div>
-    ${compareHTML(s)}`;
+    ${compareHTML(s)}
+    ${task?buildGrader(task,s):""}`;
   wireCompare(box);
+  if(task) wireGrader(box,task);
   const ta=box.querySelector("textarea"), counts=box.querySelector(".counts");
   const upd=()=>{ const t=ta.value; counts.textContent=`${words(t)} words · ${sentences(t)} sentences`+(s.minWords?` · target ${s.minWords}+ words`:""); };
   ta.addEventListener("input",upd); upd();
@@ -1205,7 +1410,7 @@ function route(){
 }
 window.addEventListener("hashchange",route);
 document.getElementById("reset").addEventListener("click",()=>{
-  state={done:{}}; save(); route(); renderChips();
+  state.done={}; save(); route(); renderChips();   /* saved class lists are kept */
 });
 route();
 renderChips();
