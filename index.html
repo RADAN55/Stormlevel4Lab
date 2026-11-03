@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with four animated domain coaches, each built around one move that separates a Level 3 answer from a Level 4 answer. EL Publishing / Storm Studio.">
+<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with four animated domain coaches and side-by-side Level 3, 4 and 5 sample responses. EL Publishing / Storm Studio.">
 <meta name="author" content="Richard A. Daniel, M.Ed. - EL Publishing">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E2761'/%3E%3Crect x='9' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='20' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='11' y='20' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='15' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='10' width='10' height='2.6' rx='1.3' fill='%23F3F4FA'/%3E%3C/svg%3E">
 <style>
@@ -178,6 +178,20 @@ textarea:focus{border-color:var(--accent)}
 .model[open] summary::before{content:"▾ "}
 .model .mbody{padding:14px;font-size:15px;line-height:1.7;border-top:1px solid var(--line);max-width:66ch}
 .model .mbody em{color:var(--muted);font-style:normal;background:var(--accent-bg);padding:1px 4px;border-radius:3px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tabs button{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-family:var(--data);font-size:12px;letter-spacing:.05em;font-weight:600;color:var(--muted)}
+.tabs button.on{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.tabs button:hover:not(.on){border-color:var(--muted);color:var(--ink)}
+.sample{font-size:15.5px;line-height:1.7;border-left:3px solid var(--accent);padding-left:13px;max-width:66ch}
+.lvl[data-l="3"] .sample{border-left-color:var(--bad)}
+.lvl[data-l="5"] .sample{border-left-color:var(--good)}
+.nh{font-family:var(--data);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:16px 0 7px}
+.notes{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;max-width:66ch}
+.notes li{font-size:14.5px;line-height:1.55;padding-left:22px;position:relative}
+.notes li::before{position:absolute;left:0;top:0;font-family:var(--data);font-size:12px;font-weight:600}
+.notes.miss li::before{content:"○";color:var(--bad)}
+.notes.has li::before{content:"✓";color:var(--good)}
+.xnote{margin-top:13px;color:var(--muted);font-size:14px;line-height:1.6;max-width:66ch}
 .audio{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .astat{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.04em}
 .script{background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:13px;font-size:15.5px;line-height:1.7;max-width:66ch}
@@ -463,7 +477,14 @@ steps:[
  {type:"write", prompt:"Write at least four sentences describing the scene. Say where things are, and say what people are doing at this moment.",
   minWords:45, needs:["threeSentences","place","progressive","oneConnective"],
   model:`Three students are waiting at the bus stop on a rainy morning. <em>Two of them are sitting on the bench under the shelter</em>, and a third is standing in front of the sign, holding a blue umbrella. A green backpack is lying on the ground next to the bench, <em>because</em> there is no room left on the seat. The rain is falling hard, so everyone is staying close to the shelter.`,
-  modelnote:"Count what the model does that a short answer would not: four sentences, five location phrases, every verb in the present progressive, and one <i>because</i> clause that explains something the picture only implies."}
+  modelnote:"Count what the model does that a short answer would not: four sentences, five location phrases, every verb in the present progressive, and one <i>because</i> clause that explains something the picture only implies.",
+  compare:{
+   l3:{text:"There are three students at the bus stop. It is raining. One student has an umbrella. There is a backpack on the ground.",
+       notes:["Names what is in the picture and stops there","Every sentence is built the same way — <i>There is</i>, <i>There are</i>","No phrase says where anything sits in relation to anything else","Every verb is <i>is</i> or <i>has</i>, so nothing is happening"]},
+   l4notes:["Four sentences, five location phrases","Every verb is present progressive, so the scene is live","One <i>because</i> clause explains something the picture only implies","Sentence openings change: <i>Three students… / Two of them… / A green backpack…</i>"],
+   l5:{text:"Three students are waiting under a bus shelter on a rainy Monday morning. Two of them are sitting close together on the wooden bench, <em>while</em> the third stands just in front of the bus stop sign, holding a blue umbrella open <em>even though</em> the roof is only a step away. A green backpack has been left on the wet pavement beside the bench, <em>probably because</em> there is no room for it on the seat. The rain is falling steadily, and no one is standing out in the open.",
+       notes:["Everything in the Level 4 answer, and then:","Precise nouns instead of general ones — <i>shelter, pavement, bench</i>, not <i>place, ground, seat</i>","Two subordinate clauses inside a single sentence (<i>while… even though…</i>)","<i>probably</i> marks an inference as an inference; the writer knows what the picture does not actually say","A closing sentence that reads the scene as a whole instead of listing one more object"]}
+  }}
 ]},
 
 {
@@ -480,7 +501,14 @@ steps:[
  {type:"write", prompt:"Now write the email. Ask an assistant principal for permission to leave fourth period early on Friday so you can ride with your team to a match. Give the reason, and close it properly.",
   minWords:55, needs:["greeting","polite","because","noSlang","closing"],
   model:`Dear Mr. Okafor,<br><br><em>I am writing to ask</em> for permission to leave fourth period early on Friday, October 16. <em>Would it be possible</em> for me to be excused at 1:15 p.m.? The soccer team leaves at 1:30, <em>and I need to ride the bus with them because</em> the match is in Hattiesburg. I have spoken with my fourth period teacher and I will complete the assignment that evening.<br><br>Thank you for your time,<br>Daniela Ruiz`,
-  modelnote:"Notice what the model adds that a bare request does not: a specific date and time, the reason, and a sentence showing the writer has already handled the obvious objection. Anticipating the reader's next question is Level 4 behavior."}
+  modelnote:"Notice what the model adds that a bare request does not: a specific date and time, the reason, and a sentence showing the writer has already handled the obvious objection. Anticipating the reader's next question is Level 4 behavior.",
+  compare:{
+   l3:{text:"Dear Mr. Okafor,<br><br>Can I leave fourth period early on Friday? I have a soccer game.<br><br>Thank you.",
+       notes:["A greeting and a closing are there, so this is not informal — it is thin","<i>Can I</i> asks about ability; a formal request asks about possibility or permission","No date, no time, and the reason is three words long","Nothing shows the writer thought about what the reader would ask next"]},
+   l4notes:["Opens by naming why the email exists","<i>Would it be possible</i> turns a demand into a request at no extra length","A specific date and departure time, so the reader can answer without writing back to ask","A closing sentence that handles the obvious objection before it is raised"],
+   l5:{text:"Dear Mr. Okafor,<br><br><em>I am writing to request</em> permission to leave fourth period at 1:15 on Friday, October 16, <em>because</em> the soccer team departs at 1:30 for the match in Hattiesburg and players are expected to travel together rather than meet the team there.<br><br>I have already spoken with Ms. Barrett, who has agreed that I may submit Friday's lab write-up on Monday morning. <em>If it would be more appropriate</em> for this request to come from Coach Hill, I am glad to ask him to send it instead.<br><br>Thank you for considering it.<br><br>Sincerely,<br>Daniela Ruiz",
+       notes:["Everything in the Level 4 answer, and then:","<i>I am writing to request</i> — the most formal of the request frames","Two paragraphs, separating the request itself from the arrangements already made","Names the teacher and the agreement reached, so no follow-up email is needed","Offers a second route for the request, which shows the writer understands how the school works","<i>Sincerely</i> rather than <i>Thank you for your time</i>, which is the correct closing to an administrator"]}
+  }}
 ]},
 
 {
@@ -498,7 +526,14 @@ steps:[
  {type:"write", prompt:"Should your school start the day later? Take a position and support it with evidence from <b>both</b> sources. Name one reason someone might disagree with you.",
   minWords:90, needs:["claim","evidence","bothSources","concession","twoConnectives"],
   model:`The school day should start later. <em>According to Source A</em>, teenage body clocks shift during puberty, so most students are not fully alert before 8:30 a.m., and districts that moved their start time reported better attendance and fewer crashes among student drivers. That is a safety result, not only a comfort one. <em>Although Source B</em> is right that a later start pushes practices, jobs, and bus routes back, those are scheduling problems that a district can solve once, <em>while</em> a tired student repeats the same morning every day for four years. <em>For that reason</em>, the cost described in Source B is worth paying.`,
-  modelnote:"Four things are doing the work here, and a rater is looking for each one: a claim in the first sentence, named evidence from Source A, a concession to Source B that is genuinely fair, and a closing line that weighs the two against each other instead of just stopping. Write the concession even when you feel strongly — leaving it out is the single most common reason a strong opinion scores a 3."}
+  modelnote:"Four things are doing the work here, and a rater is looking for each one: a claim in the first sentence, named evidence from Source A, a concession to Source B that is genuinely fair, and a closing line that weighs the two against each other instead of just stopping. Write the concession even when you feel strongly — leaving it out is the single most common reason a strong opinion scores a 3.",
+  compare:{
+   l3:{text:"I think school should start later because students are tired. Teenagers need more sleep so they can learn. Many students fall asleep in first period. School should start at nine o'clock.",
+       notes:["There is a claim and there is a reason, and that is exactly what a 3 looks like","Neither source is named; every sentence here could have been written without reading them","Source B is never answered, so the other side does not exist in this response","<i>Many students fall asleep in first period</i> is the writer's impression offered as evidence","Four sentences of nearly the same length and shape"]},
+   l4notes:["Claim in the first sentence","Evidence named — <i>According to Source A</i> — with two specific findings","<i>Although Source B is right that…</i>, a concession that is genuinely fair to the other side","A closing line that weighs the two against each other instead of stopping","Four connectives doing real work: <i>so, although, while, for that reason</i>"],
+   l5:{text:"The school day should start later, <em>though</em> the change is only worth making if the district plans for what it disrupts. <em>Source A</em> reports that teenage body clocks shift during puberty, so most students are not alert before 8:30, and that districts which moved their start time saw better attendance and fewer crashes among student drivers. The crash finding is the one that matters: it is a safety outcome rather than a comfort one, and safety is what justifies real cost. <em>Source B</em> names that cost honestly — practices, jobs, childcare, and shared bus routes all rest on the schedule as it stands, and a district that ignores them simply moves the harm somewhere else. The difference is that those are scheduling problems a district solves once, <em>while</em> a tired sixteen-year-old repeats the same morning for four years. <em>For that reason</em> I would start later and stagger the bus routes, rather than treat the two concerns as though only one could win.",
+       notes:["Everything in the Level 4 answer, and then:","The claim is qualified in its own first sentence — <i>only worth making if…</i> — instead of stated absolutely","The writer ranks the evidence (<i>the crash finding is the one that matters</i>) rather than listing it","The concession to Source B is not only acknowledged, it is answered","A proposal at the end that resolves the tension the two sources set up","Sentence length varies on purpose, and the short sentence lands the point"]}
+  }}
 ]},
 
 /* ---------------- LISTENING ---------------- */
@@ -543,7 +578,14 @@ steps:[
  {type:"write", prompt:"Now write your own one-sentence summary, in your own words, using <b>because</b> or <b>so that</b>.",
   minWords:14, maxWords:40, needs:["because"],
   model:`Most levees fail <em>because</em> water moves through the soil underneath and carries it away, so inspectors watch the dry side for water bubbling up before the bank gives way.`,
-  modelnote:"One sentence, two ideas, joined by <i>because</i>. Length is the trap in both directions: under ten words and you have dropped the reason, over forty and you are retelling rather than summarizing."}
+  modelnote:"One sentence, two ideas, joined by <i>because</i>. Length is the trap in both directions: under ten words and you have dropped the reason, over forty and you are retelling rather than summarizing.",
+  compare:{
+   l3:{text:"Levees fail when the water goes over the top.",
+       notes:["This is the detail the speaker raised and then corrected","The main point — that failure more often happens underneath — is missing","Nine words, no reason, no <i>because</i>","A listener who heard only the first twenty seconds could have written it"]},
+   l4notes:["One sentence carrying the main claim and the reason together","<i>because</i> joins cause to effect","Twenty-eight words — long enough for the reason, short enough to still be a summary","Written in the student's own words rather than the speaker's"],
+   l5:{text:"<em>Although</em> levees can be overtopped, they fail more often from piping, <em>because</em> water moving through the soil beneath the bank carries it away from inside, which is why inspectors watch the dry side for sand boils rather than the river.",
+       notes:["Everything in the Level 4 answer, and then:","Opens with <i>Although</i>, so the misconception the speaker corrected is held inside the summary","Uses the speaker's technical term, <i>piping</i>, and uses it correctly","Ends on the contrast the whole talk was built around — the dry side, not the river","Still one sentence, still inside forty words"]}
+  }}
 ]},
 
 /* ---------------- SPEAKING ---------------- */
@@ -561,7 +603,14 @@ steps:[
    "I said what I think the pattern means, not only what it shows",
    "I kept talking for the whole 45 seconds"],
   model:`This graph shows the percentage of students who report sleeping fewer than seven hours a night, in each grade from nine to twelve. In ninth grade it is thirty-eight percent, and it rises in every grade after that. By twelfth grade it reaches sixty-one percent, which is almost double the ninth grade figure. The biggest jump is between tenth and eleventh grade. I think this means that sleep gets worse as students take on more — more homework, more jobs, and more activities in the later grades. If a school wanted to help, the eleventh grade would be the place to start, because that is where the line climbs fastest.`,
-  modelnote:"Listen for the comparison language — <i>rises, almost double, the biggest jump</i>. Numbers alone read as a list and score as a 3. The last two sentences are the interpretation, and they are what push the same content to a 4."}
+  modelnote:"Listen for the comparison language — <i>rises, almost double, the biggest jump</i>. Numbers alone read as a list and score as a 3. The last two sentences are the interpretation, and they are what push the same content to a 4.",
+  compare:{
+   l3:{text:"The graph shows sleep. In grade nine it is thirty-eight percent. In grade twelve it is sixty-one percent. More students do not sleep enough. That is bad.",
+       notes:["Two numbers read off the chart correctly, which is real but is not enough","No comparison language — the numbers sit side by side instead of against each other","<i>The graph shows sleep</i> never says what is being measured about sleep","<i>That is bad</i> is a reaction, not an interpretation","Runs about twenty seconds of a forty-five second task"]},
+   l4notes:["Says what the graph measures before giving a single number","<i>rises, almost double, the biggest jump</i> — comparison is doing the work","Interprets the pattern, then names where a school would act on it","Fills the full forty-five seconds"],
+   l5:{text:"This graph shows the percentage of students in each grade, nine through twelve, who report sleeping fewer than seven hours a night. The figure climbs in every grade, from thirty-eight percent in ninth to sixty-one percent in twelfth, so by senior year it has nearly doubled and a clear majority are short on sleep. The steepest rise is between tenth and eleventh grade, which is also when most students take on jobs, driving, and harder coursework, so I would guess those are connected. I should say that the graph only shows what students report, and people are not always accurate about their own sleep. Even so, the direction is consistent enough that if a school wanted to act, eleventh grade looks like the place to start.",
+       notes:["Everything in the Level 4 answer, and then:","Names the shape of the trend, not only the endpoints — <i>climbs in every grade</i>, <i>the steepest rise</i>","Offers a cause for the steepest segment and marks it as a guess rather than a fact","Notes a limitation of the data, which raters hear as command of the task","<i>Even so…</i> returns to a conclusion after the limitation instead of trailing off"]}
+  }}
 ]},
 
 {
@@ -578,7 +627,14 @@ steps:[
    "I named a reason someone might disagree, using although, some people say, or on the other hand",
    "I was still speaking at the forty-second mark"],
   model:`I think students should be allowed to keep their phones at lunch. First, lunch is the only part of the day that is not scheduled, so students should be able to decide how to use it. Second, many students use that time to contact family — I message my mother at lunch because she works a shift that ends before I get home. Although I understand the concern that phones stop people from talking to each other, I think a rule would not fix that. The students who sit alone would still sit alone, just without a phone. A better answer would be to give clubs somewhere to meet at lunch, so there is something to talk to people about.`,
-  modelnote:"Three structural moves to copy: <i>First… Second…</i> to mark the two reasons so the rater cannot miss them, one concrete personal example, and <i>Although I understand…</i> to carry the concession. The last sentence offers an alternative, which is above the requirement and reads as fluent rather than rehearsed."}
+  modelnote:"Three structural moves to copy: <i>First… Second…</i> to mark the two reasons so the rater cannot miss them, one concrete personal example, and <i>Although I understand…</i> to carry the concession. The last sentence offers an alternative, which is above the requirement and reads as fluent rather than rehearsed.",
+  compare:{
+   l3:{text:"I think students should keep their phones at lunch. It is our free time and we should decide. Some teachers do not like it, but I think it is fine.",
+       notes:["The position is clear in the first sentence, which is the part this answer gets right","Only one real reason — the second sentence restates the first in different words","<i>Some teachers do not like it</i> names a disagreement without giving its reason, so it is not yet a concession","Ends well before the sixty seconds are up"]},
+   l4notes:["Position first, then <i>First… Second…</i> so the rater cannot miss that there are two reasons","A concrete personal example instead of a general claim","<i>Although I understand the concern that…</i> states the other side's actual reasoning","Closes with an alternative, which reads as fluent rather than rehearsed"],
+   l5:{text:"I think students should be allowed to keep their phones at lunch, <em>with one condition</em> I will come back to. First, lunch is the only unscheduled part of the day, and a school that manages every minute of a teenager's time is not teaching anyone to manage it themselves. Second, for students like me, lunch is when family can be reached — my mother works a shift that ends after I get home, so the middle of the day is the only time we talk. Now, the concern is a fair one. Teachers notice that a table of students on phones is a table where nobody speaks, <em>and I have sat at that table</em>. But a ban takes the phone away without creating the conversation. So here is my condition: keep phones allowed, and give clubs somewhere to meet at lunch, so students who want to talk have a reason and a room. <em>If that were tried and the room stayed empty</em>, I would listen to the other argument again.",
+       notes:["Everything in the Level 4 answer, and then:","Opens with a qualified position — <i>with one condition</i> — and keeps that promise at the end","<i>and I have sat at that table</i> concedes from experience rather than from politeness","Answers the objection (<i>a ban takes the phone away without creating the conversation</i>) instead of only naming it","Ends by saying what evidence would change the speaker's mind","Sentence length varies, and the short sentences mark the turns"]}
+  }}
 ]}
 ];
 
@@ -960,8 +1016,8 @@ function buildSpeak(box,s,done){
     <div class="checks"></div>
     <div class="row"><button class="btn" type="button" data-a="sub" disabled>Score my self-check</button></div>
     <div class="whyhost"></div>
-    <details class="model"><summary>Show a Level 4 answer</summary>
-      <div class="mbody">${s.model}<p style="margin-top:12px;color:var(--muted);font-size:14px">${s.modelnote||""}</p></div></details>`;
+    ${compareHTML(s)}`;
+  wireCompare(box);
   const tomb=box.querySelector(".tomb"), tbox=box.querySelector(".timerbox"), stat=box.querySelector(".astat");
   const go=box.querySelector('[data-a="go"]'), sub=box.querySelector('[data-a="sub"]');
   const checks=box.querySelector(".checks"); let on=new Set(), timer=null;
@@ -999,6 +1055,38 @@ function buildSpeak(box,s,done){
   return box;
 }
 
+/* ---- level comparison ---- */
+function compareHTML(s){
+  if(!s.compare){
+    return s.model?`<details class="model"><summary>Show a Level 4 answer</summary>
+      <div class="mbody">${s.model}<p class="xnote">${s.modelnote||""}</p></div></details>`:"";
+  }
+  const c=s.compare;
+  const head={3:"Why this stops at a 3",4:"What makes this a 4",5:"What lifts it to a 5"};
+  const panel=(lv,text,notes,extra)=>`<div class="lvl" data-l="${lv}"${lv===4?"":" hidden"}>
+      <p class="sample">${text}</p>
+      <p class="nh">${head[lv]}</p>
+      <ul class="notes ${lv===3?"miss":"has"}">${notes.map(n=>`<li>${n}</li>`).join("")}</ul>
+      ${extra?`<p class="xnote">${extra}</p>`:""}</div>`;
+  return `<details class="model"><summary>See what a 4 or a 5 looks like</summary><div class="mbody">
+    <div class="tabs">
+      <button type="button" data-t="3">Level 3</button>
+      <button type="button" data-t="4" class="on">Level 4</button>
+      <button type="button" data-t="5">Level 5</button>
+    </div>
+    ${panel(3,c.l3.text,c.l3.notes)}
+    ${panel(4,s.model,c.l4notes,s.modelnote)}
+    ${panel(5,c.l5.text,c.l5.notes)}
+  </div></details>`;
+}
+function wireCompare(box){
+  const tabs=box.querySelectorAll(".tabs button");
+  tabs.forEach(b=>b.addEventListener("click",()=>{
+    tabs.forEach(x=>x.classList.toggle("on",x===b));
+    box.querySelectorAll(".lvl").forEach(p=>{ p.hidden = p.dataset.l!==b.dataset.t; });
+  }));
+}
+
 /* ---- writing ---- */
 function buildWrite(box,s,done){
   const id="ta-"+Math.random().toString(36).slice(2,8);
@@ -1007,8 +1095,8 @@ function buildWrite(box,s,done){
     <p class="counts" style="margin-top:7px"></p>
     <div class="row" style="margin-top:10px"><button class="btn" type="button" data-a="check">Check my signals</button></div>
     <div class="meterhost"></div>
-    <details class="model"><summary>Show a Level 4 answer</summary>
-      <div class="mbody">${s.model}<p style="margin-top:12px;color:var(--muted);font-size:14px">${s.modelnote||""}</p></div></details>`;
+    ${compareHTML(s)}`;
+  wireCompare(box);
   const ta=box.querySelector("textarea"), counts=box.querySelector(".counts");
   const upd=()=>{ const t=ta.value; counts.textContent=`${words(t)} words · ${sentences(t)} sentences`+(s.minWords?` · target ${s.minWords}+ words`:""); };
   ta.addEventListener("input",upd); upd();

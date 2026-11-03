@@ -64,8 +64,14 @@ sit in Reading and Writing.
   count, sentence count, length — then show a Level 4 model with the moves highlighted.
   It is a writing-signal check, not a score.
 - **Speaking** tasks run a clock (45s and 60s) with an honest self-check against rubric
-  behaviors, then a model answer. Nothing is recorded in the browser; pair it with
-  Flashlight360 or a partner if you want recorded evidence.
+  behaviors. Nothing is recorded in the browser; pair it with Flashlight360 or a partner if
+  you want recorded evidence.
+- **See what a 4 or a 5 looks like** sits at the bottom of all six constructed-response tasks
+  (W2, W3, W4, L2, S1, S2). Three tabs — Level 3, Level 4, Level 5 — each with a full sample
+  response to the same prompt and a list of what a rater sees in it. The Level 3 panel says
+  why that answer stops where it does; the Level 5 panel lists only what it adds on top of
+  the 4. Every Level 4 and Level 5 sample passes the same signal check the students are
+  held to.
 - **Listening** uses the device voice, with a **Show the script** button beside Play and an
   automatic fallback to the script if speech is blocked on the device or network. The coaches
   work the same way: if no voice is available the script is already written in the bubble, so
