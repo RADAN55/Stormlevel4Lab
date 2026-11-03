@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with animated domain coaches, a teacher rubric grader on the writing tasks, and Level 3/4/5 sample responses. EL Publishing / Storm Studio.">
+<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12. Autograded writing with revision tracking, animated domain coaches, Level 3/4/5 samples, and a teacher rubric grader. EL Publishing / Storm Studio.">
 <meta name="author" content="Richard A. Daniel, M.Ed. - EL Publishing">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E2761'/%3E%3Crect x='9' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='20' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='11' y='20' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='15' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='10' width='10' height='2.6' rx='1.3' fill='%23F3F4FA'/%3E%3C/svg%3E">
 <style>
@@ -210,6 +210,21 @@ input.nm:focus{border-color:var(--accent)}
 .clist{margin-top:13px;border-top:1px solid var(--line);padding-top:12px;font-size:14px;color:var(--muted);line-height:1.6}
 .clist b{color:var(--ink);font-weight:600}
 .clist .roll{font-family:var(--data);font-size:12.5px;margin-top:6px;line-height:1.8}
+.scorecard{border-bottom:1px solid var(--line);padding-bottom:13px;margin-bottom:11px}
+.scoretop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:11px}
+.scoretop .big{font-family:var(--data);font-size:34px;font-weight:600;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.scoretop .big.at4{color:var(--good)}
+.scoretop .lvn{font-family:var(--display);font-weight:700;font-size:18px}
+.scoretop .try{font-family:var(--data);font-size:11.5px;color:var(--muted);letter-spacing:.04em;margin-left:auto}
+.gain{color:var(--good);font-weight:600}
+.sdim{display:flex;align-items:center;gap:11px;font-size:14px;padding:5px 0}
+.sdim .sn{flex:1 1 auto;min-width:0}
+.pips{display:flex;gap:4px;flex:none}
+.pips i{width:17px;height:7px;border-radius:3px;background:var(--line)}
+.pips i.on{background:var(--accent)}
+.pips.full i.on{background:var(--good)}
+.fixbox{background:var(--accent-bg);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:11px 13px;margin-top:12px;font-size:14.5px;line-height:1.55}
+.fixbox .lab{color:var(--accent);display:block;margin-bottom:3px}
 .audio{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
 .astat{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.04em}
 .script{background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:13px;font-size:15.5px;line-height:1.7;max-width:66ch}
@@ -286,9 +301,10 @@ footer .wrap{padding-block:22px 34px;font-size:13px;color:var(--muted);display:f
 
 /* ============================ storage ============================ */
 const KEY="level4lab.v1";
-let state={done:{},graded:{}};
-try{const r=localStorage.getItem(KEY); if(r) state=Object.assign({done:{},graded:{}},JSON.parse(r));}catch(e){}
+let state={done:{},graded:{},attempts:{}};
+try{const r=localStorage.getItem(KEY); if(r) state=Object.assign({done:{},graded:{},attempts:{}},JSON.parse(r));}catch(e){}
 if(!state.graded) state.graded={};
+if(!state.attempts) state.attempts={};
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
 function mark(id){ if(!state.done[id]){ state.done[id]=1; save(); renderChips(); } }
 
@@ -1162,6 +1178,21 @@ const RUBRICS={
   DIM_CTRL]}
 };
 
+/* student-facing version of each dimension's next step */
+const FIXES={
+ "Organization and connectives":{1:"Join two of your sentences with <b>because</b>.",2:"Add a second joining word — <b>although</b> or <b>however</b>.",3:"Add one more joining word, and start two sentences differently."},
+ "Sentence control":{1:"Write one complete sentence with a subject and a verb, then add a second.",2:"Combine two short sentences into one using <b>because</b>, <b>although</b>, or <b>if</b>.",3:"Do not start three sentences in a row with the same word."},
+ "Content and detail":{1:"Name four different things you can see, one in each sentence.",2:"Write four sentences. You have fewer than that right now.",3:"Add one detail nobody else would notice."},
+ "Location and action language":{1:"Say <b>where</b> each thing is (under, next to, in front of) and <b>what is happening</b> (is waiting, are sitting).",2:"Add the missing half — if you said where things are, now say what is happening right now.",3:"Add one more location phrase, like <b>between</b> or <b>across from</b>."},
+ "Register for the reader":{1:"Start with <b>Dear</b> and end with <b>Thank you</b>.",2:"Change your request to <b>Would it be possible…</b> or <b>I am writing to ask…</b>",3:"One piece is missing. Check that you have a greeting, a polite request, and a closing."},
+ "Completeness of the request":{1:"Say clearly what you are asking permission for.",2:"Add the day and the exact time. Your reader cannot say yes without them.",3:"Add the one missing detail — usually the time."},
+ "Claim":{1:"Write your position as the first sentence: <b>The school should…</b>",2:"Say it outright, with <b>should</b> or <b>I think</b>.",3:"Move your position up into the first two sentences."},
+ "Evidence from the sources":{1:"Find one line in each source and use it in your answer.",2:"Name the source: <b>According to Source A…</b>",3:"Bring in the second source too. One source keeps you at a 3."},
+ "Counterargument":{1:"Add one sentence: <b>Although Source B is right that…</b>",2:"Say <i>why</i> the other side thinks that, not just that they disagree.",3:"After your concession, say why your side still holds."}
+};
+Object.keys(RUBRICS).forEach(k=>RUBRICS[k].dims.forEach(d=>{ if(!d.fix) d.fix=FIXES[d.name]||d.next; }));
+
+const LEVEL_LABEL={4:"Level 4 — proficient range",3:"Level 3 — close",2:"Level 2 — building",1:"Level 1 — getting started"};
 function gradeOf(rub,text){ return rub.dims.map(d=>d.band(text)); }
 function overall(scores){ return Math.round(scores.reduce((a,b)=>a+b,0)/scores.length); }
 function feedbackText(rub,scores){
@@ -1304,7 +1335,7 @@ function buildWrite(box,s,done,task){
   box.innerHTML=`<span class="lab">Write it</span><p class="q">${s.prompt}</p>
     <textarea id="${id}" placeholder="Write your answer here."></textarea>
     <p class="counts" style="margin-top:7px"></p>
-    <div class="row" style="margin-top:10px"><button class="btn" type="button" data-a="check">Check my signals</button></div>
+    <div class="row" style="margin-top:10px"><button class="btn" type="button" data-a="check">${task&&RUBRICS[task.id]?"Score my writing":"Check my signals"}</button></div>
     <div class="meterhost"></div>
     ${task?buildGrader(task,s):""}
     ${compareHTML(s)}`;
@@ -1323,12 +1354,38 @@ function buildWrite(box,s,done,task){
     if(s.maxWords) rows.push({label:`Stays under ${s.maxWords} words`, ok:maxOk, hint:`You are at ${words(t)}. A summary that long is a retelling.`});
     const hit=rows.filter(r=>r.ok).length;
     const verdict = hit===rows.length ? "Every Level 4 signal is present" : hit>=rows.length-1 ? "One signal missing" : hit>=Math.ceil(rows.length/2) ? "Reads like a Level 3 answer" : "Most signals still missing";
+
+    /* auto-score for the student, on the tasks that carry a rubric */
+    let card="";
+    const rub = task ? RUBRICS[task.id] : null;
+    if(rub){
+      const sc=gradeOf(rub,t), lv=overall(sc);
+      const list=(state.attempts[task.id]=state.attempts[task.id]||[]);
+      const best=list.length?Math.max.apply(null,list):0;
+      list.push(lv); if(list.length>30) list.shift(); save();
+      const gained = list.length>1 && lv>best;
+      let lo=0; sc.forEach((v,i)=>{ if(v<sc[lo]) lo=i; });
+      const fix = sc[lo]>=4
+        ? "Nothing is holding this back. Try the same shape on a longer prompt."
+        : `<b>${rub.dims[lo].name}.</b> ${rub.dims[lo].fix[sc[lo]]}`;
+      card=`<div class="scorecard">
+        <div class="scoretop"><span class="big${lv>=4?" at4":""}">${lv}</span>
+          <span class="lvn">${LEVEL_LABEL[lv]}</span>
+          <span class="try">attempt ${list.length}${list.length>1?" · best "+Math.max(best,lv):""}</span></div>
+        ${gained?`<p style="font-size:14.5px;margin-bottom:9px"><span class="gain">Up from ${best}.</span> The revision worked — keep going.</p>`:""}
+        ${rub.dims.map((d,i)=>`<div class="sdim"><span class="sn">${d.name}</span>
+          <span class="pips${sc[i]>=4?" full":""}">${[1,2,3,4].map(n=>`<i class="${n<=sc[i]?"on":""}"></i>`).join("")}</span></div>`).join("")}
+        <div class="fixbox"><span class="lab">Fix this first</span>${fix}</div>
+      </div>`;
+    }
+
     box.querySelector(".meterhost").innerHTML=`<div class="meter">
+      ${card}
       <div class="mh"><span class="lab">Signal check</span><span class="verdict">${verdict}</span>
         <span class="counts">${hit}/${rows.length}</span></div>
       ${rows.map(r=>`<div class="sig ${r.ok?"on":"off"}"><span class="m">${r.ok?"✓":"○"}</span>
         <span>${r.label}${r.ok?"":`<br><span style="font-size:13.5px">${r.hint}</span>`}</span></div>`).join("")}
-      <p class="counts" style="margin-top:4px">This is a writing-signal check, not an ELPA21 score. A rater reads for meaning as well; these are the features that are countable.</p>
+      <p class="counts" style="margin-top:4px">Practice scoring, not an ELPA21 score. A rater reads for meaning too; these are the features a machine can count. Revise and score again as many times as you like.</p>
     </div>`;
     if(!box.dataset.ans){ box.dataset.ans="1"; done(); }
   });
@@ -1418,7 +1475,7 @@ function route(){
 }
 window.addEventListener("hashchange",route);
 document.getElementById("reset").addEventListener("click",()=>{
-  state.done={}; save(); route(); renderChips();   /* saved class lists are kept */
+  state.done={}; state.attempts={}; save(); route(); renderChips();   /* saved class lists are kept */
 });
 route();
 renderChips();

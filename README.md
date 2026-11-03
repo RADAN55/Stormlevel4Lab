@@ -60,9 +60,15 @@ sit in Reading and Writing.
 - Open the site, pick a task from the grid. The coach speaks first. Progress saves in that
   browser only.
 - **Reading and listening** items give instant feedback that explains the move.
-- **Writing** tasks run a live signal check — claim marker, named source, concession, connective
-  count, sentence count, length — then show a Level 4 model with the moves highlighted.
-  It is a writing-signal check, not a score.
+- **Writing** tasks are autograded. **Score my writing** returns a 1–4 level with the same
+  four-row rubric the teacher panel uses, a pip meter per row, and one **Fix this first**
+  instruction written for the student, pointing at the weakest row. Below that is the signal
+  check — claim marker, named source, concession, connective count, length — so the student
+  can see exactly which feature is missing.
+- Students can revise and score again as often as they like. The lab remembers the attempt
+  count and the best level, and says **Up from 2** when a revision lifts the score. The
+  "fix this first" line changes as the draft improves, so it always names the next thing
+  rather than repeating the first thing.
 - **Speaking** tasks run a clock (45s and 60s) with an honest self-check against rubric
   behaviors. Nothing is recorded in the browser; pair it with Flashlight360 or a partner if
   you want recorded evidence.
