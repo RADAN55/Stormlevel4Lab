@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12, each built around one move that separates a Level 3 answer from a Level 4 answer. EL Publishing / Storm Studio.">
+<meta name="author" content="Richard A. Daniel, M.Ed. - EL Publishing">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E2761'/%3E%3Crect x='9' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='20' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='11' y='20' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='15' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='10' width='10' height='2.6' rx='1.3' fill='%23F3F4FA'/%3E%3C/svg%3E">
+<style>
+/* standalone skeleton (the hosted artifact gets this from the platform) */
+html,body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>The Level 4 Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a domain rail beside one working panel; everything stacks to one column at phone width. */
+:root{
+  --bg:#F5F6FA; --surface:#FFFFFF; --raise:#EEF0F7;
+  --ink:#141833; --muted:#5B6185; --line:#DCE0EC;
+  --brand:#1E2761; --brand-ink:#F3F4FA; --accent:#9A7B14; --accent-bg:#F4EDD6;
+  --good:#1A6E52; --good-bg:#E2F2EB; --bad:#9E2F2F; --bad-bg:#FAE7E7;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --data:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:10px; --maxw:1120px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0D1020; --surface:#161B30; --raise:#1E2440;
+  --ink:#E9EBF5; --muted:#9BA2C4; --line:#2B3253;
+  --brand:#1A2142; --brand-ink:#EDEFF8; --accent:#E2C165; --accent-bg:#2C2714;
+  --good:#6BD6AC; --good-bg:#123025; --bad:#F09A9A; --bad-bg:#331818;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0D1020; --surface:#161B30; --raise:#1E2440;
+  --ink:#E9EBF5; --muted:#9BA2C4; --line:#2B3253;
+  --brand:#1A2142; --brand-ink:#EDEFF8; --accent:#E2C165; --accent-bg:#2C2714;
+  --good:#6BD6AC; --good-bg:#123025; --bad:#F09A9A; --bad-bg:#331818;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.lab{font-family:var(--data);font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600}
+
+/* ---------- masthead ---------- */
+header.top{background:var(--brand);color:var(--brand-ink)}
+header.top .wrap{padding-block:26px 22px;display:flex;flex-direction:column;gap:14px}
+.brandline{display:flex;align-items:center;gap:10px;color:var(--accent)}
+.brandline .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none}
+header.top h1{font-size:clamp(30px,6vw,46px);letter-spacing:-.015em}
+header.top .sub{color:var(--brand-ink);opacity:.82;max-width:62ch;font-size:15px}
+.gate{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.gatecard{flex:1 1 260px;min-width:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:12px 14px}
+.gatecard .lab{color:var(--accent);display:block;margin-bottom:4px}
+.gatecard p{font-size:13.5px;opacity:.88;line-height:1.5}
+
+/* ---------- progress rail ---------- */
+.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--surface);border-bottom:1px solid var(--line)}
+.rail .wrap{padding-block:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap;flex:1 1 auto;min-width:0}
+.chip{display:flex;align-items:center;gap:7px;background:var(--raise);border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 9px;font-size:13px;font-weight:600}
+.chip.gateon{border-color:var(--accent)}
+.chip .ring{width:18px;height:18px;flex:none}
+.chip .n{font-family:var(--data);font-size:11.5px;color:var(--muted);font-weight:600}
+.chip .star{color:var(--accent);font-size:11px;font-family:var(--data);font-weight:600}
+.reset{background:none;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--muted)}
+.reset:hover{color:var(--ink);border-color:var(--muted)}
+
+/* ---------- card grid ---------- */
+main .wrap{padding-block:26px 56px}
+.secthead{display:flex;align-items:baseline;gap:12px;margin:26px 0 12px;flex-wrap:wrap}
+.secthead:first-child{margin-top:0}
+.secthead h2{font-size:21px}
+.secthead .lab{color:var(--muted)}
+.secthead .gatetag{background:var(--accent-bg);color:var(--accent);border-radius:4px;padding:2px 7px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:9px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;width:100%}
+.card:hover{border-color:var(--muted)}
+.card.done{border-left:3px solid var(--good);padding-left:14px}
+.card .crow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card .id{font-family:var(--data);font-size:11.5px;color:var(--muted);font-weight:600}
+.card .tick{font-family:var(--data);font-size:11px;color:var(--good);font-weight:600}
+.card h3{font-size:17.5px}
+.card .move{font-size:13.5px;color:var(--muted);line-height:1.5}
+.card .move b{color:var(--ink);font-weight:600}
+.card .meta{font-family:var(--data);font-size:10.5px;color:var(--muted);letter-spacing:.05em;border-top:1px solid var(--line);padding-top:8px;margin-top:2px}
+
+/* ---------- task view ---------- */
+.back{background:none;border:none;color:var(--muted);padding:0;font-size:14px;font-weight:600;display:inline-flex;gap:7px;align-items:center}
+.back:hover{color:var(--ink)}
+.taskhead{margin:16px 0 20px;display:flex;flex-direction:column;gap:10px}
+.taskhead h2{font-size:clamp(23px,4.6vw,31px)}
+.taskhead .id{font-family:var(--data);font-size:11.5px;letter-spacing:.09em;color:var(--accent);font-weight:600;text-transform:uppercase}
+.movebox{background:var(--accent-bg);border-left:3px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:12px 14px}
+.movebox .lab{color:var(--accent);display:block;margin-bottom:3px}
+.movebox p{font-size:14.5px}
+.spec{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.04em;line-height:1.7}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.step>.lab{color:var(--muted);display:block;margin-bottom:10px}
+.step h4{font-size:16px;margin-bottom:10px}
+.passage{font-size:16.5px;line-height:1.75;max-width:66ch}
+.passage p+p{margin-top:12px}
+.doc{background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:14px;font-size:15px;line-height:1.65;max-width:66ch}
+.doc+.doc{margin-top:10px}
+.doc .dh{font-family:var(--data);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;font-weight:600}
+.doc .kv{font-size:13.5px;color:var(--muted);margin-bottom:2px}
+.q{font-size:16px;font-weight:600;margin-bottom:11px;max-width:62ch}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:11px 13px;font-size:15px;line-height:1.5;width:100%}
+.opt:hover:not(:disabled){border-color:var(--muted)}
+.opt:disabled{cursor:default}
+.opt .mk{font-family:var(--data);font-size:12px;font-weight:600;color:var(--muted);flex:none;width:15px;padding-top:2px}
+.opt.pick-ok{background:var(--good-bg);border-color:var(--good)}
+.opt.pick-ok .mk{color:var(--good)}
+.opt.pick-no{background:var(--bad-bg);border-color:var(--bad)}
+.opt.pick-no .mk{color:var(--bad)}
+.opt.reveal{border-color:var(--good);border-style:dashed}
+.why{margin-top:11px;border-left:3px solid var(--line);padding:2px 0 2px 12px;font-size:14.5px;color:var(--muted);max-width:62ch}
+.why b{color:var(--ink)}
+.why.ok{border-color:var(--good)}
+.why.no{border-color:var(--bad)}
+.sents{display:flex;flex-direction:column;gap:5px;max-width:68ch}
+.sent{text-align:left;background:var(--surface);border:1px solid transparent;border-radius:7px;padding:8px 11px;font-size:15.5px;line-height:1.55;width:100%}
+.sent:hover:not(:disabled){background:var(--raise)}
+.sent:disabled{cursor:default}
+.sent.pick-ok{background:var(--good-bg);border-color:var(--good)}
+.sent.pick-no{background:var(--bad-bg);border-color:var(--bad)}
+.sent.reveal{border-color:var(--good);border-style:dashed}
+.chipbar{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.wchip{background:var(--raise);border:1px solid var(--line);border-radius:7px;padding:7px 11px;font-size:15px}
+.wchip:hover:not(:disabled){border-color:var(--accent)}
+.wchip:disabled{opacity:.35;cursor:default}
+.built{min-height:52px;background:var(--raise);border:1px dashed var(--line);border-radius:8px;padding:12px 14px;font-size:16.5px;line-height:1.5;margin-bottom:10px}
+.built.empty{color:var(--muted);font-style:italic;font-size:14.5px}
+.built.ok{background:var(--good-bg);border-color:var(--good);border-style:solid}
+.built.no{background:var(--bad-bg);border-color:var(--bad);border-style:solid}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--brand);color:var(--brand-ink);border:1px solid var(--brand);border-radius:7px;padding:9px 16px;font-size:14.5px;font-weight:600}
+.btn:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--muted);opacity:1}
+.btn:disabled{opacity:.45;cursor:default}
+.tomb{font-family:var(--data);font-size:34px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.timerbox{display:flex;align-items:center;gap:16px;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;flex-wrap:wrap}
+.timerbox.live .tomb{color:var(--accent)}
+.checks{display:flex;flex-direction:column;gap:3px;margin:10px 0}
+.ck{display:flex;gap:10px;align-items:flex-start;text-align:left;background:none;border:none;padding:7px 0;font-size:15px;line-height:1.5;width:100%;border-bottom:1px solid var(--line)}
+.ck:last-child{border-bottom:none}
+.ck .box{width:19px;height:19px;flex:none;border:1.5px solid var(--line);border-radius:5px;margin-top:2px;display:grid;place-items:center;font-size:12px;color:transparent;font-weight:700}
+.ck.on .box{background:var(--good);border-color:var(--good);color:#fff}
+.ck.on{color:var(--ink)}
+textarea{width:100%;min-height:150px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px;font-family:var(--body);font-size:15.5px;line-height:1.65;resize:vertical}
+textarea:focus{border-color:var(--accent)}
+.meter{display:flex;flex-direction:column;gap:7px;margin-top:12px;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:14px}
+.meter .mh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.meter .mh .lab{color:var(--muted)}
+.meter .mh .verdict{font-family:var(--display);font-weight:700;font-size:17px}
+.sig{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;line-height:1.5}
+.sig .m{font-family:var(--data);font-size:12px;font-weight:600;flex:none;width:16px;padding-top:2px}
+.sig.on .m{color:var(--good)} .sig.off .m{color:var(--muted)}
+.sig.off{color:var(--muted)}
+.counts{font-family:var(--data);font-size:11.5px;color:var(--muted);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.model{margin-top:12px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.model summary{cursor:pointer;padding:11px 14px;background:var(--raise);font-size:14px;font-weight:600;list-style:none}
+.model summary::-webkit-details-marker{display:none}
+.model summary::before{content:"▸ ";color:var(--accent)}
+.model[open] summary::before{content:"▾ "}
+.model .mbody{padding:14px;font-size:15px;line-height:1.7;border-top:1px solid var(--line);max-width:66ch}
+.model .mbody em{color:var(--muted);font-style:normal;background:var(--accent-bg);padding:1px 4px;border-radius:3px}
+.audio{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.astat{font-family:var(--data);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.script{background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:13px;font-size:15.5px;line-height:1.7;max-width:66ch}
+.figwrap{background:#EDF0F7;border:1px solid var(--line);border-radius:8px;padding:12px;max-width:520px}
+.figwrap svg{display:block;width:100%;height:auto;max-width:100%}
+.figcap{font-family:var(--data);font-size:10.5px;color:#5B6185;letter-spacing:.05em;margin-top:8px;text-transform:uppercase}
+.chartwrap{max-width:480px}
+.chartwrap svg{display:block;width:100%;height:auto;max-width:100%}
+.donebar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--good-bg);border:1px solid var(--good);border-radius:var(--r);padding:14px 16px;margin-top:18px}
+.donebar p{font-size:14.5px;color:var(--ink)}
+.donebar .lab{color:var(--good)}
+footer{border-top:1px solid var(--line);margin-top:10px}
+footer .wrap{padding-block:22px 34px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:var(--maxw)}
+@media (max-width:560px){
+  .step{padding:14px}
+  header.top .wrap{padding-block:20px 18px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brandline"><span class="dot"></span><span class="lab">EL Publishing · Storm Studio</span></div>
+    <h1>The Level 4 Lab</h1>
+    <p class="sub">Twelve ELPA21 tasks for grades 9–12, each built around one move that separates a Level 3 answer from a Level 4 answer. Not a practice test — a set of drills on the behavior the rubric is actually looking for.</p>
+    <div class="gate">
+      <div class="gatecard">
+        <span class="lab">The target</span>
+        <p>ELPA21 reports a student Proficient when the score profile reaches Level&nbsp;4 or higher in every domain. One domain at Level 3 holds the whole profile back.</p>
+      </div>
+      <div class="gatecard">
+        <span class="lab">Where the lab puts its weight</span>
+        <p>Eight of the twelve tasks sit in Reading and Writing, the two domains that carry the most weight in Mississippi exit decisions and that stall the most Progressing students.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="rail"><div class="wrap">
+  <div class="chips" id="chips"></div>
+  <button class="reset" id="reset" type="button">Clear progress</button>
+</div></div>
+
+<main><div class="wrap" id="view"></div></main>
+
+<footer><div class="wrap">
+  <p>Passages, emails, and figures in this lab are original practice texts written for classroom use. Names, schools, dates, and figures inside them are invented and are not announcements.</p>
+  <p>Progress is saved in this browser only. It does not travel to another device and no one else can see it.</p>
+</div></footer>
+
+<script>
+"use strict";
+
+/* ============================ storage ============================ */
+const KEY="level4lab.v1";
+let state={done:{}};
+try{const r=localStorage.getItem(KEY); if(r) state=Object.assign({done:{}},JSON.parse(r));}catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+function mark(id){ if(!state.done[id]){ state.done[id]=1; save(); renderChips(); } }
+
+/* ============================ text analysis ============================ */
+function words(t){ return (t.trim().match(/[A-Za-zÀ-ÿ'’-]+/g)||[]).length; }
+function sentences(t){ return (t.trim().split(/[.!?]+/).map(s=>s.trim()).filter(s=>words(s)>=2)).length; }
+const RX={
+  connective:/\b(because|although|though|however|therefore|so that|for example|for instance|in addition|on the other hand|while|even though|as a result|since|instead)\b/gi,
+  because:/\b(because|so that|since)\b/i,
+  evidence:/\b(according to|the text says|the text states|the article says|the article states|the passage says|the passage states|source a|source b|the first source|the second source|states that|reports that|researchers find|researchers say)\b/i,
+  claim:/\b(i think|i believe|i agree|i disagree|should|should not|shouldn't|my position|the school ought)\b/i,
+  concession:/\b(although|even though|while|some people say|some people argue|others say|others argue|it is true that|on the other hand|admittedly|critics say)\b/i,
+  progressive:/\b(is|are|'s|’s)\s+[a-z]+ing\b/i,
+  place:/\b(on|under|next to|behind|in front of|beside|between|near|across from|above|at the|underneath)\b/gi,
+  polite:/\b(could you|would you|i would like|i would appreciate|would it be possible|may i|i am writing to|i am writing because)\b/i,
+  greeting:/^(\s*)(dear|good morning|good afternoon|hello)\b/i,
+  closing:/\b(thank you|sincerely|respectfully|thank you for your time)\b/i,
+  slang:/\b(hey|hiya|gonna|wanna|gotta|yeah|yep|nope|lol|kinda|sorta|stuff|u|ur|plz|thx)\b/i
+};
+function countRx(t,re){ const m=t.match(new RegExp(re.source,"gi")); return m?m.length:0; }
+
+const SIGNALS={
+  claim:{label:"States a position in your own words", test:t=>RX.claim.test(t), hint:"Open with what you think — “The school should…”, “I disagree because…”"},
+  evidence:{label:"Points to the source, not just your opinion", test:t=>RX.evidence.test(t), hint:"Name where it came from: “According to Source A…”, “The text states that…”"},
+  bothSources:{label:"Uses both sources, not only the one you agree with", test:t=>/\bsource a\b/i.test(t)&&/\bsource b\b/i.test(t), hint:"Level 4 writers answer the other side. Mention Source A and Source B by name."},
+  concession:{label:"Names a reason someone might disagree", test:t=>RX.concession.test(t), hint:"Add one clause: “Although some families worry about…”"},
+  twoConnectives:{label:"Joins ideas with at least two connectives", test:t=>countRx(t,RX.connective)>=2, hint:"because · although · however · so that · for example · as a result"},
+  oneConnective:{label:"Uses a connective to join two ideas", test:t=>countRx(t,RX.connective)>=1, hint:"because · although · however · so that · for example"},
+  because:{label:"Gives the reason with because, since, or so that", test:t=>RX.because.test(t), hint:"The reason is the part that moves a 3 to a 4. Say it out loud in the sentence."},
+  progressive:{label:"Describes action in progress (is / are + -ing)", test:t=>RX.progressive.test(t), hint:"“A student is waiting under the shelter.”"},
+  place:{label:"Says where things are (two or more location phrases)", test:t=>countRx(t,RX.place)>=2, hint:"under the shelter · next to the bench · in front of the sign"},
+  polite:{label:"Makes the request in a formal form", test:t=>RX.polite.test(t), hint:"“I am writing to ask whether…”, “Would it be possible to…”"},
+  greeting:{label:"Opens with a greeting", test:t=>RX.greeting.test(t), hint:"Start with “Dear Ms. ___,” or “Good morning,”"},
+  closing:{label:"Closes the message", test:t=>RX.closing.test(t), hint:"“Thank you for your time,” then your name."},
+  noSlang:{label:"Keeps casual words out", test:t=>!RX.slang.test(t), hint:"Swap hey → Dear, gonna → going to, stuff → materials."},
+  threeSentences:{label:"Writes at least three full sentences", test:t=>sentences(t)>=3, hint:"Three sentences is the floor for a Level 4 description."}
+};
+
+/* ============================ task data ============================ */
+const DOMAINS={
+  reading:{name:"Reading",gate:true,blurb:"The domain that most often holds a profile at Level 3. Every task here asks for the line, not just the answer."},
+  writing:{name:"Writing",gate:true,blurb:"Scored on claim, support, and sentence control. The drills below build each one separately before combining them."},
+  listening:{name:"Listening",gate:false,blurb:"Beyond catching details: why the speaker is talking, and saying the whole thing back in one sentence."},
+  speaking:{name:"Speaking",gate:false,blurb:"Raters score length, reasons, and precision. These tasks run on a clock, the way the test does."}
+};
+
+const TASKS=[
+/* ---------------- READING ---------------- */
+{
+id:"r1", domain:"reading", title:"Prove It",
+move:"A Level 3 reader picks the right answer. A Level 4 reader can put a finger on the line that makes it right.",
+spec:"ELPA21 task type · Read an informational passage  ·  ELP Standard 1 / 8",
+steps:[
+ {type:"read", title:"Heat Rules on the Practice Field", html:`
+  <p>In August, the practice field at a Mississippi high school can reach temperatures far above the air temperature reported on the news. Dark turf absorbs sunlight and radiates heat upward, so a player standing on the field takes on more heat stress than a person standing in the grass beside it.</p>
+  <p>For this reason, most state athletic associations now require a period called heat acclimatization at the start of the season. During the first five days, teams practice without full pads and in shorter blocks. Coaches add equipment gradually over the following week.</p>
+  <p>The rules also depend on measurement rather than on how the weather feels. Athletic trainers use a wet bulb globe temperature reading, which combines heat, humidity, sun, and wind into a single number. When that number crosses a set limit, practice must be shortened, moved indoors, or canceled.</p>
+  <p>Critics once argued that the restrictions would weaken teams. Athletic directors report the opposite. Fewer athletes are lost to heat illness in September, so more players are available when the schedule matters most.</p>`},
+ {type:"mcq", q:"According to the passage, why do trainers rely on a wet bulb globe temperature reading instead of the air temperature?",
+  options:[
+   {t:"It is easier for coaches to read quickly.",ok:false},
+   {t:"It folds several weather conditions into one number.",ok:true},
+   {t:"It is the number reported on the news each morning.",ok:false},
+   {t:"It tells coaches how many players are on the field.",ok:false}],
+  why:"The passage never claims the reading is faster or more familiar. It says the measurement combines four conditions — heat, humidity, sun, and wind. On ELPA21, the wrong choices are usually true-sounding, not false-sounding. The one you can point to in the text wins."},
+ {type:"evidence", prompt:"Now the Level 4 half. Click the sentence from the passage that proves your answer.",
+  sentences:[
+   {t:"Dark turf absorbs sunlight and radiates heat upward, so a player standing on the field takes on more heat stress than a person standing in the grass beside it.",ok:false},
+   {t:"The rules also depend on measurement rather than on how the weather feels.",ok:false},
+   {t:"Athletic trainers use a wet bulb globe temperature reading, which combines heat, humidity, sun, and wind into a single number.",ok:true},
+   {t:"When that number crosses a set limit, practice must be shortened, moved indoors, or canceled.",ok:false}],
+  why:"The second sentence is close, and that is the trap. It tells you the rules use measurement; it does not tell you what the measurement contains. Proof has to match the question word for word, not just sit near it."},
+ {type:"mcq", q:"What does the final paragraph mainly do?",
+  options:[
+   {t:"It introduces a new rule that has not been explained yet.",ok:false},
+   {t:"It answers an objection that people raised about the rules.",ok:true},
+   {t:"It lists the equipment teams wear during the first five days.",ok:false},
+   {t:"It repeats the main idea of the first paragraph.",ok:false}],
+  why:"“Critics once argued…” then “Athletic directors report the opposite.” That pair — objection, then answer — is a structure question, and structure questions are where Level 3 readers lose points. Ask what a paragraph is doing, not only what it says."},
+ {type:"mcq", q:"In paragraph 2, <b>gradually</b> means that coaches add equipment —",
+  options:[{t:"all at once on the sixth day",ok:false},{t:"a little at a time",ok:true},{t:"only if the weather is cool",ok:false},{t:"without telling the players",ok:false}],
+  why:"The sentence before it sets up five days without full pads. “Over the following week” is the clue sitting right beside the word. Context does the work; a translation app would have given you the word but not the test item."}
+]},
+
+{
+id:"r2", domain:"reading", title:"Word Detective",
+move:"A Level 3 reader looks a word up. A Level 4 reader reads the sentence around it — and knows what the pronouns are pointing at.",
+spec:"ELPA21 task type · Read an informational passage  ·  ELP Standard 8",
+steps:[
+ {type:"read", title:"The Charger You Never Unplug", html:`
+  <p>A phone charger left in the wall keeps drawing a small amount of electricity even when nothing is attached to it. Engineers call this standby load, and it is sometimes described as a vampire, because it drains power quietly while the house sleeps.</p>
+  <p>One charger is negligible. The waste only becomes visible when it is multiplied. A single household may own a dozen devices that behave the same way, and a school building may hold hundreds. Added together across a district, standby load can equal the electricity used to light several classrooms for a year.</p>
+  <p>The fix is unglamorous. Power strips with switches cut the current to a whole group of devices at once, and newer chargers are built to shut themselves down when they sense no device. Neither solution asks anyone to change a habit dramatically, which is why energy managers favor them. The hardest part is noticing the problem at all.</p>`},
+ {type:"mcq", q:"In paragraph 2, <b>negligible</b> means —",
+  options:[{t:"too small to matter",ok:true},{t:"dangerous if ignored",ok:false},{t:"difficult to measure",ok:false},{t:"expensive to replace",ok:false}],
+  why:"The next sentence does the defining: the waste <i>only becomes visible when it is multiplied</i>. One of something invisible is something small. The clue for a hard word is almost always in the sentence on either side of it."},
+ {type:"mcq", q:"In paragraph 3, <b>unglamorous</b> tells you the fix is —",
+  options:[{t:"unpopular with students",ok:false},{t:"plain and unexciting",ok:true},{t:"illegal in some districts",ok:false},{t:"still being invented",ok:false}],
+  why:"Power strips and auto-shutoff chargers are the examples that follow. When you cannot crack a word, read past it to the examples — the writer almost always supplies them."},
+ {type:"mcq", q:"In the sentence “…which is why energy managers favor <b>them</b>,” the word <b>them</b> refers to —",
+  options:[{t:"energy managers",ok:false},{t:"the two solutions just described",ok:true},{t:"school buildings in the district",ok:false},{t:"chargers left in the wall",ok:false}],
+  why:"This is the quiet skill that separates 3 from 4. Pronoun reference across a long sentence is tested on every ELPA21 reading form. Walk backward from the pronoun to the last plural thing the writer was actually talking about — here, the power strips and the newer chargers."},
+ {type:"evidence", prompt:"Click the sentence that best states the writer's main point about standby load.",
+  sentences:[
+   {t:"A phone charger left in the wall keeps drawing a small amount of electricity even when nothing is attached to it.",ok:false},
+   {t:"The waste only becomes visible when it is multiplied.",ok:true},
+   {t:"Power strips with switches cut the current to a whole group of devices at once.",ok:false},
+   {t:"The hardest part is noticing the problem at all.",ok:false}],
+  why:"The first sentence is a fact, not the point. The last is a closing remark. The main point is the idea the rest of the passage exists to support, and every example after it — a dozen devices, hundreds in a building, a district — is multiplication."}
+]},
+
+{
+id:"r3", domain:"reading", title:"How the Paragraph Works",
+move:"A Level 3 reader finds what a paragraph says. A Level 4 reader can say what the paragraph is doing in the argument.",
+spec:"ELPA21 task type · Read an informational passage  ·  ELP Standard 1 / 6",
+steps:[
+ {type:"read", title:"Two Ways to Keep a Street Dry", html:`
+  <p>When heavy rain falls faster than the ground can absorb it, water runs across pavement and collects in low places. Cities have two broad strategies for dealing with it.</p>
+  <p>The traditional approach is gray infrastructure: pipes, culverts, and concrete channels that move water away quickly. Gray systems are predictable and easy to size with a formula. They are also expensive to enlarge, and when a storm exceeds the design, the pipe simply fills and the street floods anyway.</p>
+  <p>The newer approach is green infrastructure: rain gardens, permeable pavement, and restored ditches planted with deep-rooted grasses. Green systems slow water down and let some of it soak in. They cost less to install per block, but they take land, and they need maintenance that a pipe does not.</p>
+  <p>Neither approach solves the problem alone. The cities that flood least tend to use both, sizing pipes for ordinary storms and leaving green space to absorb what the pipes cannot carry.</p>`},
+ {type:"mcq", q:"What is paragraph 2 doing?",
+  options:[
+   {t:"Introducing one strategy together with its limits",ok:true},
+   {t:"Proving that gray infrastructure is the better choice",ok:false},
+   {t:"Explaining why heavy rain floods streets",ok:false},
+   {t:"Comparing two cities that handled a storm differently",ok:false}],
+  why:"Watch the shape: a definition, then a strength, then <i>They are also expensive…</i> Paragraph 3 runs the identical shape for the other side. When two paragraphs share a shape, the writer is setting up a comparison, and the question about structure is coming."},
+ {type:"mcq", q:"In paragraph 3, the word <b>but</b> in “They cost less to install per block, <b>but</b> they take land” signals that the writer is about to —",
+  options:[{t:"give another advantage",ok:false},{t:"turn to a drawback",ok:true},{t:"repeat the earlier idea",ok:false},{t:"quote an expert",ok:false}],
+  why:"Signal words are free points. <i>But, although, however, on the other hand</i> all announce a turn. Mark them while you read and half the structure questions answer themselves."},
+ {type:"evidence", prompt:"Click the sentence that states the writer's overall claim.",
+  sentences:[
+   {t:"Cities have two broad strategies for dealing with it.",ok:false},
+   {t:"Gray systems are predictable and easy to size with a formula.",ok:false},
+   {t:"Green systems slow water down and let some of it soak in.",ok:false},
+   {t:"The cities that flood least tend to use both, sizing pipes for ordinary storms and leaving green space to absorb what the pipes cannot carry.",ok:true}],
+  why:"The first sentence announces the topic; a claim takes a position on it. In a both-sides passage the claim usually waits until the end, after the writer has been fair to each side. Read the last paragraph first when a question asks for the main argument."}
+]},
+
+{
+id:"r4", domain:"reading", title:"Two Texts, One Answer",
+move:"A Level 3 reader answers from one text. A Level 4 reader notices that the answer is only true once both texts are read together.",
+spec:"ELPA21 task type · Read correspondence and a notice  ·  ELP Standard 1",
+steps:[
+ {type:"read", title:"Read both documents", html:`
+  <div class="doc"><span class="dh">Document 1 · Email</span>
+   <p class="kv"><b>From:</b> Counseling Office, Riverside High School</p>
+   <p class="kv"><b>To:</b> Grade 11 students</p>
+   <p class="kv"><b>Subject:</b> ACT fee waivers</p>
+   <p style="margin-top:9px">Students who qualify may take the ACT at no cost. To use a waiver you must register online before the registration deadline and enter the waiver code on the payment screen. Waiver codes are issued in person in the counseling office. They are not emailed. Bring your student ID.</p>
+  </div>
+  <div class="doc"><span class="dh">Document 2 · Hallway notice</span>
+   <p style="font-family:var(--display);font-size:18px;font-weight:700;margin-bottom:6px">ACT at Riverside High</p>
+   <p class="kv">Test date · Saturday, December 12</p>
+   <p class="kv">Online registration closes · Friday, November 20</p>
+   <p class="kv">Late registration, extra fee · November 21–27</p>
+   <p class="kv">Doors open 7:30 a.m. · Photo ID and two No. 2 pencils</p>
+  </div>`},
+ {type:"mcq", q:"A student picks up a waiver code on November 25 and registers that evening. What happens?",
+  options:[
+   {t:"She registers free, because the waiver covers the whole cost.",ok:false},
+   {t:"She registers during the late window, so a late fee applies on top of the waiver.",ok:true},
+   {t:"She cannot register at all, because the deadline has passed.",ok:false},
+   {t:"She must wait for the counseling office to email the code.",ok:false}],
+  why:"Neither document answers this alone. The notice supplies the dates; the email supplies the rule that the waiver covers the test fee. Put the date against the window and the late fee appears. Cross-text items are written exactly this way — one document is never enough."},
+ {type:"mcq", q:"What must a student do that the hallway notice never mentions?",
+  options:[{t:"Bring a photo ID",ok:false},{t:"Go to the counseling office in person for the code",ok:true},{t:"Arrive by 7:30 a.m.",ok:false},{t:"Register online",ok:false}],
+  why:"A question that asks what one text leaves out is really asking you to hold both in your head at once. Read the second document with the first one still open — on screen, that means scrolling back, not guessing."},
+ {type:"evidence", prompt:"Click the sentence from the email that a student who waited for an email to arrive had missed.",
+  sentences:[
+   {t:"Students who qualify may take the ACT at no cost.",ok:false},
+   {t:"To use a waiver you must register online before the registration deadline and enter the waiver code on the payment screen.",ok:false},
+   {t:"Waiver codes are issued in person in the counseling office. They are not emailed.",ok:true},
+   {t:"Bring your student ID.",ok:false}],
+  why:"Short sentences carry the rules that catch people out. When a text states something in the negative — <i>they are not emailed</i> — expect a question on it."}
+]},
+
+/* ---------------- WRITING ---------------- */
+{
+id:"w1", domain:"writing", title:"Build the Sentence",
+move:"A Level 3 writer joins ideas with and or so. A Level 4 writer subordinates one idea to the other, and the relationship becomes visible.",
+spec:"ELPA21 task type · Build a sentence  ·  ELP Standard 10",
+steps:[
+ {type:"combine", prompt:"Two ideas: <b>The field was dangerously hot.</b> + <b>Practice moved indoors.</b><br>Build one sentence that shows the cause, starting with the cause.",
+  chips:["Because","the field","was dangerously","hot,","practice","moved indoors.","and","so"],
+  answers:["because the field was dangerously hot, practice moved indoors."],
+  why:"<b>Because the field was dangerously hot, practice moved indoors.</b> Starting with the subordinate clause is the move. <i>The field was hot and practice moved indoors</i> is two facts side by side; the version above states a cause, and a rater can see you know the difference."},
+ {type:"combine", prompt:"Two ideas: <b>Green systems cost less to install.</b> + <b>They need maintenance.</b><br>Build one sentence that concedes the first and lands on the second.",
+  chips:["Although","green systems","cost less","to install,","they need","maintenance.","but","however"],
+  answers:["although green systems cost less to install, they need maintenance."],
+  why:"<b>Although green systems cost less to install, they need maintenance.</b> <i>Although</i> tells the reader that the first half is not where you are going. This is the sentence pattern that carries a concession in a Level 4 opinion essay — learn it here and reuse it in task W4."},
+ {type:"combine", prompt:"Two ideas: <b>Students must register online.</b> + <b>They want to use a fee waiver.</b><br>Build one sentence stating the condition.",
+  chips:["Students","must register","online","if","they want","to use","a fee waiver.","because"],
+  answers:["students must register online if they want to use a fee waiver."],
+  why:"<b>Students must register online if they want to use a fee waiver.</b> Three subordinators, three relationships: <i>because</i> for cause, <i>although</i> for concession, <i>if</i> for condition. Raters count sentence variety, and these three cover most of what a test prompt asks for."}
+]},
+
+{
+id:"w2", domain:"writing", title:"Describe What You See",
+move:"A Level 3 writer names what is in the picture. A Level 4 writer says where everything is and what is happening right now.",
+spec:"ELPA21 task type · Describe a picture  ·  ELP Standard 3 / 10",
+steps:[
+ {type:"figure", kind:"scene", title:"Look closely before you write", caption:"Practice illustration · Monday morning, bus stop"},
+ {type:"write", prompt:"Write at least four sentences describing the scene. Say where things are, and say what people are doing at this moment.",
+  minWords:45, needs:["threeSentences","place","progressive","oneConnective"],
+  model:`Three students are waiting at the bus stop on a rainy morning. <em>Two of them are sitting on the bench under the shelter</em>, and a third is standing in front of the sign, holding a blue umbrella. A green backpack is lying on the ground next to the bench, <em>because</em> there is no room left on the seat. The rain is falling hard, so everyone is staying close to the shelter.`,
+  modelnote:"Count what the model does that a short answer would not: four sentences, five location phrases, every verb in the present progressive, and one <i>because</i> clause that explains something the picture only implies."}
+]},
+
+{
+id:"w3", domain:"writing", title:"Say It to the Principal",
+move:"A Level 3 writer gets the message across. A Level 4 writer matches the language to the person reading it.",
+spec:"ELPA21 task type · Write an email  ·  ELP Standard 7 / 9",
+steps:[
+ {type:"mcq", q:"You are writing to an assistant principal. Which opening belongs in the email?",
+  options:[{t:"Hey, quick question about the field trip.",ok:false},{t:"Dear Mr. Okafor, I am writing to ask about the field trip on Friday.",ok:true},{t:"I need to know about the trip.",ok:false},{t:"Field trip Friday???",ok:false}],
+  why:"Register is scored. The second option names the reader, states why the email exists, and gives the topic in one line. The first is friendly but wrong for the reader; the third is complete but blunt; the fourth is not a sentence."},
+ {type:"mcq", q:"Which request is phrased for a formal reader?",
+  options:[{t:"Can I get out of fourth period?",ok:false},{t:"I gotta leave early that day.",ok:false},{t:"Would it be possible for me to leave fourth period early?",ok:true},{t:"Let me leave early please.",ok:false}],
+  why:"<i>Would it be possible…</i> and <i>Could you…</i> are the two frames worth memorizing. They turn a demand into a request without adding length, and they cost a rater nothing to notice."},
+ {type:"write", prompt:"Now write the email. Ask an assistant principal for permission to leave fourth period early on Friday so you can ride with your team to a match. Give the reason, and close it properly.",
+  minWords:55, needs:["greeting","polite","because","noSlang","closing"],
+  model:`Dear Mr. Okafor,<br><br><em>I am writing to ask</em> for permission to leave fourth period early on Friday, October 16. <em>Would it be possible</em> for me to be excused at 1:15 p.m.? The soccer team leaves at 1:30, <em>and I need to ride the bus with them because</em> the match is in Hattiesburg. I have spoken with my fourth period teacher and I will complete the assignment that evening.<br><br>Thank you for your time,<br>Daniela Ruiz`,
+  modelnote:"Notice what the model adds that a bare request does not: a specific date and time, the reason, and a sentence showing the writer has already handled the obvious objection. Anticipating the reader's next question is Level 4 behavior."}
+]},
+
+{
+id:"w4", domain:"writing", title:"Make a Claim, Back It Up",
+move:"A Level 3 writer gives an opinion and a reason. A Level 4 writer takes a position, uses evidence from both sources, and admits what the other side has.",
+spec:"ELPA21 task type · Write and support a claim from sources  ·  ELP Standard 4 / 11",
+steps:[
+ {type:"read", title:"Question: Should the school day start later?", html:`
+  <div class="doc"><span class="dh">Source A</span>
+   <p>Sleep researchers find that teenage body clocks shift later during puberty, so most high school students are not fully alert before 8:30 a.m. Districts that moved their start time later have reported better attendance and fewer crashes among student drivers. The change does not ask students to sleep more hours; it moves the same hours to a better place in the night.</p>
+  </div>
+  <div class="doc"><span class="dh">Source B</span>
+   <p>A later start pushes everything else back. Athletic practices, part-time jobs, and after-school childcare all depend on the schedule as it stands, and bus routes that serve elementary and high schools with the same drivers cannot be reversed without cost. Some families say the later release time takes more from students than the extra sleep gives them.</p>
+  </div>`},
+ {type:"write", prompt:"Should your school start the day later? Take a position and support it with evidence from <b>both</b> sources. Name one reason someone might disagree with you.",
+  minWords:90, needs:["claim","evidence","bothSources","concession","twoConnectives"],
+  model:`The school day should start later. <em>According to Source A</em>, teenage body clocks shift during puberty, so most students are not fully alert before 8:30 a.m., and districts that moved their start time reported better attendance and fewer crashes among student drivers. That is a safety result, not only a comfort one. <em>Although Source B</em> is right that a later start pushes practices, jobs, and bus routes back, those are scheduling problems that a district can solve once, <em>while</em> a tired student repeats the same morning every day for four years. <em>For that reason</em>, the cost described in Source B is worth paying.`,
+  modelnote:"Four things are doing the work here, and a rater is looking for each one: a claim in the first sentence, named evidence from Source A, a concession to Source B that is genuinely fair, and a closing line that weighs the two against each other instead of just stopping. Write the concession even when you feel strongly — leaving it out is the single most common reason a strong opinion scores a 3."}
+]},
+
+/* ---------------- LISTENING ---------------- */
+{
+id:"l1", domain:"listening", title:"Why Is She Telling Me This?",
+move:"A Level 3 listener catches the details. A Level 4 listener can say why the speaker is speaking at all.",
+spec:"ELPA21 task type · Listen to an announcement  ·  ELP Standard 1 / 6",
+steps:[
+ {type:"listen", title:"School announcement", script:"Good morning. This is a reminder for anyone who signed up for the career fair on Thursday. The fair is in the gym, not the library, and that change is final. You will need a pass from your fourth period teacher to attend, and passes have to be collected before Wednesday afternoon. If you signed up and can no longer go, please tell the front office, because a student on the waiting list can take your place."},
+ {type:"mcq", q:"Why is the speaker making this announcement?",
+  options:[
+   {t:"To invite new students to sign up for the career fair",ok:false},
+   {t:"To correct a detail and give instructions to students already signed up",ok:true},
+   {t:"To explain what students will see at the career fair",ok:false},
+   {t:"To announce that the career fair has been canceled",ok:false}],
+  why:"Purpose questions are answered by who the speaker is talking to. The first line narrows it: <i>anyone who signed up</i>. Nothing in the announcement is aimed at recruiting, describing, or canceling — it fixes a location and tells a known group what to do."},
+ {type:"mcq", q:"Why does the speaker mention the waiting list at the end?",
+  options:[
+   {t:"To warn students that the fair may be full",ok:false},
+   {t:"To give students a reason to report that they are not going",ok:true},
+   {t:"To explain how students were chosen for the fair",ok:false},
+   {t:"To say that the front office keeps the list",ok:false}],
+  why:"Listen for the word <i>because</i> in a spoken prompt — it almost always marks the answer to a why-question. The waiting list is not information for its own sake; it is the reason the speaker wants students to call in."},
+ {type:"mcq", q:"A student who signed up has not yet talked to a teacher. What does the announcement tell her to do?",
+  options:[{t:"Go to the library on Thursday",ok:false},{t:"Get a pass from her fourth period teacher before Wednesday afternoon",ok:true},{t:"Call the front office to be added to the list",ok:false},{t:"Wait for an email with a pass",ok:false}],
+  why:"Two details have to travel together here — which teacher, and by when. Spoken prompts are heard once on the real test, so train the habit of holding the pair, not just the first half."}
+]},
+
+{
+id:"l2", domain:"listening", title:"Say It Back in One Sentence",
+move:"A Level 3 listener repeats a detail from the talk. A Level 4 listener compresses the whole talk without losing the point.",
+spec:"ELPA21 task type · Summarize an academic presentation  ·  ELP Standard 2 / 4",
+steps:[
+ {type:"listen", title:"Short talk · How a levee fails", script:"A levee is a raised bank built beside a river to keep high water off the land behind it. People usually picture a levee failing when water pours over the top, and that does happen. More often, though, the river works underneath. Water pushes through the soil beneath the levee and carries small particles away with it, a process engineers call piping. The bank above still looks solid while a channel widens below it. That is why inspectors in flood season walk the dry side of a levee and look for clear water bubbling up in the field. A sand boil of that kind is a warning that the levee is being hollowed out from the inside."},
+ {type:"mcq", q:"Which sentence is the best summary of the talk?",
+  options:[
+   {t:"Inspectors walk the dry side of levees during flood season.",ok:false},
+   {t:"Levees are raised banks that protect land from rivers.",ok:false},
+   {t:"Levees fail most often from water moving through the soil underneath, which is why inspectors look for water surfacing on the dry side.",ok:true},
+   {t:"Rivers in flood season are dangerous and difficult to control.",ok:false}],
+  why:"The first option is one detail. The second is background from the opening line. The fourth is true of almost any flood talk, which is the giveaway — a summary that would fit a different talk is too broad. The right one carries the main claim and the reason the speaker gives for it."},
+ {type:"write", prompt:"Now write your own one-sentence summary, in your own words, using <b>because</b> or <b>so that</b>.",
+  minWords:14, maxWords:40, needs:["because"],
+  model:`Most levees fail <em>because</em> water moves through the soil underneath and carries it away, so inspectors watch the dry side for water bubbling up before the bank gives way.`,
+  modelnote:"One sentence, two ideas, joined by <i>because</i>. Length is the trap in both directions: under ten words and you have dropped the reason, over forty and you are retelling rather than summarizing."}
+]},
+
+/* ---------------- SPEAKING ---------------- */
+{
+id:"s1", domain:"speaking", title:"Read the Graph Out Loud",
+move:"A Level 3 speaker reads numbers off the chart. A Level 4 speaker compares them and says what they add up to.",
+spec:"ELPA21 task type · Talk about a graph  ·  ELP Standard 3 / 5",
+steps:[
+ {type:"figure", kind:"chart", title:"Study the graph", caption:"Practice data · written for this task, not a real survey"},
+ {type:"speak", prompt:"Describe what the graph shows, then say what you think it means. Speak for the full 45 seconds.", seconds:45,
+  checklist:[
+   "I said what the graph measures before giving any numbers",
+   "I gave at least two numbers from the graph",
+   "I compared two grades out loud (more than, almost double, the highest)",
+   "I said what I think the pattern means, not only what it shows",
+   "I kept talking for the whole 45 seconds"],
+  model:`This graph shows the percentage of students who report sleeping fewer than seven hours a night, in each grade from nine to twelve. In ninth grade it is thirty-eight percent, and it rises in every grade after that. By twelfth grade it reaches sixty-one percent, which is almost double the ninth grade figure. The biggest jump is between tenth and eleventh grade. I think this means that sleep gets worse as students take on more — more homework, more jobs, and more activities in the later grades. If a school wanted to help, the eleventh grade would be the place to start, because that is where the line climbs fastest.`,
+  modelnote:"Listen for the comparison language — <i>rises, almost double, the biggest jump</i>. Numbers alone read as a list and score as a 3. The last two sentences are the interpretation, and they are what push the same content to a 4."}
+]},
+
+{
+id:"s2", domain:"speaking", title:"Two Reasons and a Concession",
+move:"A Level 3 speaker gives an opinion and stops. A Level 4 speaker gives two reasons and shows they understand the other side.",
+spec:"ELPA21 task type · State and support an opinion  ·  ELP Standard 4 / 5",
+steps:[
+ {type:"read", title:"The prompt", html:`<p class="passage">Your school is deciding whether students should be allowed to keep phones with them during the lunch period. Some teachers say phones keep students from talking to each other. Some students say lunch is their own time.</p><p class="passage" style="margin-top:10px"><b>Say what you think. Give two reasons. Then name one reason someone might disagree with you.</b></p>`},
+ {type:"speak", prompt:"Answer the prompt. You have 60 seconds, and a Level 4 answer uses most of them.", seconds:60,
+  checklist:[
+   "I stated my position in my first sentence",
+   "I gave two separate reasons, not the same reason twice",
+   "I used because or so that at least once",
+   "I named a reason someone might disagree, using although, some people say, or on the other hand",
+   "I was still speaking at the forty-second mark"],
+  model:`I think students should be allowed to keep their phones at lunch. First, lunch is the only part of the day that is not scheduled, so students should be able to decide how to use it. Second, many students use that time to contact family — I message my mother at lunch because she works a shift that ends before I get home. Although I understand the concern that phones stop people from talking to each other, I think a rule would not fix that. The students who sit alone would still sit alone, just without a phone. A better answer would be to give clubs somewhere to meet at lunch, so there is something to talk to people about.`,
+  modelnote:"Three structural moves to copy: <i>First… Second…</i> to mark the two reasons so the rater cannot miss them, one concrete personal example, and <i>Although I understand…</i> to carry the concession. The last sentence offers an alternative, which is above the requirement and reads as fluent rather than rehearsed."}
+]}
+];
+
+const BY_DOMAIN={};
+TASKS.forEach(t=>{ (BY_DOMAIN[t.domain]=BY_DOMAIN[t.domain]||[]).push(t); });
+
+/* ============================ chips ============================ */
+function ring(frac){
+  const r=7,c=2*Math.PI*r;
+  return `<svg class="ring" viewBox="0 0 18 18" aria-hidden="true">
+    <circle cx="9" cy="9" r="${r}" fill="none" stroke="var(--line)" stroke-width="3"></circle>
+    <circle cx="9" cy="9" r="${r}" fill="none" stroke="${frac>=1?"var(--good)":"var(--accent)"}" stroke-width="3"
+      stroke-dasharray="${(c*frac).toFixed(2)} ${c.toFixed(2)}" stroke-linecap="round" transform="rotate(-90 9 9)"></circle>
+  </svg>`;
+}
+function renderChips(){
+  const el=document.getElementById("chips");
+  el.innerHTML=Object.keys(DOMAINS).map(k=>{
+    const list=BY_DOMAIN[k]||[], n=list.filter(t=>state.done[t.id]).length;
+    const d=DOMAINS[k];
+    return `<span class="chip${d.gate?" gateon":""}">${ring(list.length?n/list.length:0)}${d.name}
+      <span class="n">${n}/${list.length}</span>${d.gate?'<span class="star">gate</span>':''}</span>`;
+  }).join("");
+  document.querySelectorAll(".card").forEach(c=>{
+    const id=c.dataset.id; if(!id) return;
+    c.classList.toggle("done",!!state.done[id]);
+    const t=c.querySelector(".tick"); if(t) t.textContent=state.done[id]?"done":"";
+  });
+}
+
+/* ============================ home ============================ */
+function renderHome(){
+  const v=document.getElementById("view");
+  v.innerHTML=Object.keys(DOMAINS).map(k=>{
+    const d=DOMAINS[k];
+    return `<section>
+      <div class="secthead">
+        <h2>${d.name}</h2>
+        ${d.gate?'<span class="lab gatetag">exit gate</span>':''}
+        <span class="lab">${(BY_DOMAIN[k]||[]).length} tasks</span>
+      </div>
+      <p style="color:var(--muted);font-size:14.5px;max-width:70ch;margin-bottom:12px">${d.blurb}</p>
+      <div class="grid">${(BY_DOMAIN[k]||[]).map(cardHTML).join("")}</div>
+    </section>`;
+  }).join("");
+  v.querySelectorAll(".card").forEach(c=>c.addEventListener("click",()=>{location.hash=c.dataset.id;}));
+  renderChips();
+}
+function cardHTML(t){
+  return `<button class="card" type="button" data-id="${t.id}">
+    <span class="crow"><span class="id">${t.id.toUpperCase()}</span><span class="tick"></span></span>
+    <h3>${t.title}</h3>
+    <span class="move">${t.move}</span>
+    <span class="meta">${t.spec}</span>
+  </button>`;
+}
+
+/* ============================ task view ============================ */
+function renderTask(t){
+  const v=document.getElementById("view");
+  v.innerHTML=`<button class="back" id="back" type="button">← All tasks</button>
+    <div class="taskhead">
+      <span class="id">${t.id.toUpperCase()} · ${DOMAINS[t.domain].name}</span>
+      <h2>${t.title}</h2>
+      <div class="movebox"><span class="lab">The 3 → 4 move</span><p>${t.move}</p></div>
+      <p class="spec">${t.spec}</p>
+    </div>
+    <div id="steps"></div>
+    <div id="donebar"></div>`;
+  document.getElementById("back").addEventListener("click",()=>{location.hash="";});
+  const host=document.getElementById("steps");
+  const interactive=t.steps.filter(s=>s.type!=="read"&&s.type!=="listen"&&s.type!=="figure");
+  let answered=0;
+  const bump=()=>{ answered++; if(answered>=interactive.length){ mark(t.id); showDone(t); } };
+  t.steps.forEach((s,i)=>host.appendChild(buildStep(s,i,bump)));
+  if(state.done[t.id]) showDone(t,true);
+  window.scrollTo(0,0);
+}
+function showDone(t,quiet){
+  const bar=document.getElementById("donebar"); if(!bar||bar.dataset.on) return;
+  bar.dataset.on="1";
+  const list=BY_DOMAIN[t.domain], n=list.filter(x=>state.done[x.id]).length;
+  bar.innerHTML=`<div class="donebar">
+    <div style="flex:1 1 260px;min-width:0">
+      <span class="lab">${quiet?"Already finished":"Task complete"}</span>
+      <p>${DOMAINS[t.domain].name}: ${n} of ${list.length} tasks done.</p>
+    </div>
+    <button class="btn" type="button" id="nextbtn">Next task</button>
+    <button class="btn ghost" type="button" id="allbtn">All tasks</button>
+  </div>`;
+  const idx=TASKS.findIndex(x=>x.id===t.id), nxt=TASKS[(idx+1)%TASKS.length];
+  bar.querySelector("#nextbtn").addEventListener("click",()=>{location.hash=nxt.id;});
+  bar.querySelector("#allbtn").addEventListener("click",()=>{location.hash="";});
+  renderChips();
+}
+
+function el(html){ const d=document.createElement("div"); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+function buildStep(s,i,done){
+  const box=document.createElement("div"); box.className="step";
+  if(s.type==="read"){
+    box.innerHTML=`<span class="lab">Text ${s.title?"· "+s.title:""}</span><div class="passage">${s.html}</div>`;
+    return box;
+  }
+  if(s.type==="figure"){
+    box.innerHTML=`<span class="lab">${s.title}</span>
+      <div class="${s.kind==="chart"?"chartwrap":"figwrap"}">${s.kind==="chart"?CHART():SCENE()}
+      ${s.kind==="chart"?"":`<div class="figcap">${s.caption}</div>`}</div>
+      ${s.kind==="chart"?`<p class="figcap">${s.caption}</p>`:""}`;
+    return box;
+  }
+  if(s.type==="listen") return buildListen(box,s);
+  if(s.type==="mcq")    return buildMcq(box,s,done);
+  if(s.type==="evidence") return buildEvidence(box,s,done);
+  if(s.type==="combine")  return buildCombine(box,s,done);
+  if(s.type==="speak")    return buildSpeak(box,s,done);
+  if(s.type==="write")    return buildWrite(box,s,done);
+  return box;
+}
+
+/* ---- listening ---- */
+let voices=[];
+function loadVoices(){ try{ voices=window.speechSynthesis?speechSynthesis.getVoices():[]; }catch(e){ voices=[]; } }
+loadVoices();
+if(window.speechSynthesis) try{ speechSynthesis.onvoiceschanged=loadVoices; }catch(e){}
+function buildListen(box,s){
+  box.innerHTML=`<span class="lab">Listening · ${s.title}</span>
+    <div class="audio">
+      <button class="btn" type="button" data-a="play">▶ Play</button>
+      <button class="btn ghost" type="button" data-a="stop">Stop</button>
+      <button class="btn ghost" type="button" data-a="show">Show the script</button>
+      <span class="astat"></span>
+    </div>
+    <div class="script" hidden></div>`;
+  const script=box.querySelector(".script"); script.textContent=s.script;
+  const stat=box.querySelector(".astat");
+  box.querySelector('[data-a="show"]').addEventListener("click",e=>{
+    script.hidden=!script.hidden;
+    e.target.textContent=script.hidden?"Show the script":"Hide the script";
+  });
+  box.querySelector('[data-a="stop"]').addEventListener("click",()=>{ try{speechSynthesis.cancel();}catch(e){} stat.textContent=""; });
+  box.querySelector('[data-a="play"]').addEventListener("click",()=>{
+    if(!window.speechSynthesis){ stat.textContent="No voice on this device — use the script"; script.hidden=false; return; }
+    try{
+      speechSynthesis.cancel();
+      loadVoices();
+      const parts=s.script.split(/(?<=[.?!])\s+/);
+      let n=0;
+      stat.textContent="playing";
+      parts.forEach(p=>{
+        const u=new SpeechSynthesisUtterance(p);
+        u.rate=.92; u.lang="en-US";
+        const v=voices.find(x=>x.lang&&x.lang.indexOf("en")===0&&x.localService)||voices.find(x=>x.lang&&x.lang.indexOf("en")===0);
+        if(v) u.voice=v;
+        u.onend=()=>{ n++; if(n>=parts.length) stat.textContent="finished"; };
+        u.onerror=()=>{ stat.textContent="voice blocked — use the script"; script.hidden=false; };
+        speechSynthesis.speak(u);
+      });
+      setTimeout(()=>{ if(stat.textContent==="playing"&&!speechSynthesis.speaking){ stat.textContent="no sound — use the script"; script.hidden=false; } },1400);
+    }catch(e){ stat.textContent="no sound — use the script"; script.hidden=false; }
+  });
+  return box;
+}
+
+/* ---- mcq ---- */
+function buildMcq(box,s,done){
+  box.innerHTML=`<span class="lab">Question</span><p class="q">${s.q}</p><div class="opts"></div><div class="whyhost"></div>`;
+  const host=box.querySelector(".opts"); const marks="ABCDEF";
+  s.options.forEach((o,i)=>{
+    const b=el(`<button class="opt" type="button"><span class="mk">${marks[i]}</span><span>${o.t}</span></button>`);
+    b.addEventListener("click",()=>{
+      if(box.dataset.ans) return; box.dataset.ans="1";
+      host.querySelectorAll(".opt").forEach((x,j)=>{
+        x.disabled=true;
+        if(j===i) x.classList.add(o.ok?"pick-ok":"pick-no");
+        else if(s.options[j].ok) x.classList.add("reveal");
+      });
+      box.querySelector(".whyhost").innerHTML=
+        `<div class="why ${o.ok?"ok":"no"}"><b>${o.ok?"Correct.":"Not that one."}</b> ${s.why}</div>`;
+      done();
+    });
+    host.appendChild(b);
+  });
+  return box;
+}
+
+/* ---- evidence ---- */
+function buildEvidence(box,s,done){
+  box.innerHTML=`<span class="lab">Find the proof</span><p class="q">${s.prompt}</p><div class="sents"></div><div class="whyhost"></div>`;
+  const host=box.querySelector(".sents");
+  s.sentences.forEach((o,i)=>{
+    const b=el(`<button class="sent" type="button"></button>`); b.textContent=o.t;
+    b.addEventListener("click",()=>{
+      if(box.dataset.ans) return; box.dataset.ans="1";
+      host.querySelectorAll(".sent").forEach((x,j)=>{
+        x.disabled=true;
+        if(j===i) x.classList.add(o.ok?"pick-ok":"pick-no");
+        else if(s.sentences[j].ok) x.classList.add("reveal");
+      });
+      box.querySelector(".whyhost").innerHTML=
+        `<div class="why ${o.ok?"ok":"no"}"><b>${o.ok?"That is the line.":"Close, but that line does not prove it."}</b> ${s.why}</div>`;
+      done();
+    });
+    host.appendChild(b);
+  });
+  return box;
+}
+
+/* ---- combine ---- */
+function norm(t){ return t.toLowerCase().replace(/\s+/g," ").replace(/\s+([,.])/g,"$1").trim(); }
+function buildCombine(box,s,done){
+  box.innerHTML=`<span class="lab">Build one sentence</span><p class="q">${s.prompt}</p>
+    <div class="built empty">Tap the words below to build your sentence.</div>
+    <div class="chipbar"></div>
+    <div class="row"><button class="btn" type="button" data-a="check">Check</button>
+      <button class="btn ghost" type="button" data-a="undo">Undo</button>
+      <button class="btn ghost" type="button" data-a="clear">Start over</button></div>
+    <div class="whyhost"></div>`;
+  const built=box.querySelector(".built"), bar=box.querySelector(".chipbar");
+  let picked=[];
+  s.chips.forEach((c,i)=>{
+    const b=el(`<button class="wchip" type="button" data-i="${i}"></button>`); b.textContent=c;
+    b.addEventListener("click",()=>{ if(box.dataset.ans) return; picked.push({i,c}); b.disabled=true; paint(); });
+    bar.appendChild(b);
+  });
+  function paint(){
+    built.classList.remove("empty","ok","no");
+    if(!picked.length){ built.classList.add("empty"); built.textContent="Tap the words below to build your sentence."; return; }
+    built.textContent=picked.map(p=>p.c).join(" ").replace(/\s+([,.])/g,"$1");
+  }
+  box.querySelector('[data-a="undo"]').addEventListener("click",()=>{
+    if(box.dataset.ans) return; const last=picked.pop();
+    if(last) bar.querySelector('[data-i="'+last.i+'"]').disabled=false; paint();
+  });
+  box.querySelector('[data-a="clear"]').addEventListener("click",()=>{
+    if(box.dataset.ans) return; picked=[]; bar.querySelectorAll(".wchip").forEach(x=>x.disabled=false); paint();
+  });
+  box.querySelector('[data-a="check"]').addEventListener("click",()=>{
+    if(box.dataset.ans||!picked.length) return;
+    const got=norm(built.textContent);
+    const ok=s.answers.some(a=>norm(a)===got);
+    box.dataset.ans="1";
+    built.classList.add(ok?"ok":"no");
+    bar.querySelectorAll(".wchip").forEach(x=>x.disabled=true);
+    box.querySelector('[data-a="undo"]').disabled=true;
+    box.querySelector('[data-a="clear"]').disabled=true;
+    box.querySelector('[data-a="check"]').disabled=true;
+    box.querySelector(".whyhost").innerHTML=
+      `<div class="why ${ok?"ok":"no"}"><b>${ok?"Exactly that.":"Not quite — here is the sentence."}</b> ${s.why}</div>`;
+    done();
+  });
+  return box;
+}
+
+/* ---- speaking ---- */
+function buildSpeak(box,s,done){
+  box.innerHTML=`<span class="lab">Speak it</span><p class="q">${s.prompt}</p>
+    <div class="timerbox"><span class="tomb">0:${String(s.seconds).padStart(2,"0")}</span>
+      <button class="btn" type="button" data-a="go">Start the clock</button>
+      <span class="astat">Speak out loud. Nothing is recorded.</span></div>
+    <h4>Check yourself honestly</h4>
+    <div class="checks"></div>
+    <div class="row"><button class="btn" type="button" data-a="sub" disabled>Score my self-check</button></div>
+    <div class="whyhost"></div>
+    <details class="model"><summary>Show a Level 4 answer</summary>
+      <div class="mbody">${s.model}<p style="margin-top:12px;color:var(--muted);font-size:14px">${s.modelnote||""}</p></div></details>`;
+  const tomb=box.querySelector(".tomb"), tbox=box.querySelector(".timerbox"), stat=box.querySelector(".astat");
+  const go=box.querySelector('[data-a="go"]'), sub=box.querySelector('[data-a="sub"]');
+  const checks=box.querySelector(".checks"); let on=new Set(), timer=null;
+  s.checklist.forEach((c,i)=>{
+    const b=el(`<button class="ck" type="button"><span class="box">✓</span><span></span></button>`);
+    b.querySelector("span:last-child").textContent=c;
+    b.addEventListener("click",()=>{
+      if(box.dataset.ans) return;
+      if(on.has(i)){on.delete(i);b.classList.remove("on");} else {on.add(i);b.classList.add("on");}
+    });
+    checks.appendChild(b);
+  });
+  go.addEventListener("click",()=>{
+    if(timer) return;
+    let left=s.seconds; tbox.classList.add("live"); go.disabled=true; stat.textContent="Go — keep talking.";
+    tomb.textContent="0:"+String(left).padStart(2,"0");
+    timer=setInterval(()=>{
+      left--; tomb.textContent="0:"+String(Math.max(left,0)).padStart(2,"0");
+      if(left<=0){ clearInterval(timer); timer=null; tbox.classList.remove("live");
+        stat.textContent="Time. Now check yourself below."; sub.disabled=false; go.disabled=false; go.textContent="Run it again"; }
+    },1000);
+  });
+  sub.addEventListener("click",()=>{
+    if(box.dataset.ans) return; box.dataset.ans="1";
+    const n=on.size, total=s.checklist.length;
+    const verdict = n>=total ? "Every signal there." : n>=total-1 ? "One signal short of a Level 4 answer." : "This is where a 3 usually sits.";
+    const missed=s.checklist.filter((c,i)=>!on.has(i));
+    box.querySelector(".whyhost").innerHTML=`<div class="why ${n>=total-1?"ok":"no"}">
+      <b>${n} of ${total}. ${verdict}</b> ${missed.length?"Run the clock again and fix this first: "+missed[0].replace(/^I /,"").replace(/^kept/,"keep")+"." :
+      "Record it in Flashlight360 or say it to a partner, then compare with the model below."}</div>`;
+    checks.querySelectorAll(".ck").forEach(b=>b.disabled=true);
+    sub.disabled=true;
+    done();
+  });
+  return box;
+}
+
+/* ---- writing ---- */
+function buildWrite(box,s,done){
+  const id="ta-"+Math.random().toString(36).slice(2,8);
+  box.innerHTML=`<span class="lab">Write it</span><p class="q">${s.prompt}</p>
+    <textarea id="${id}" placeholder="Write your answer here."></textarea>
+    <p class="counts" style="margin-top:7px"></p>
+    <div class="row" style="margin-top:10px"><button class="btn" type="button" data-a="check">Check my signals</button></div>
+    <div class="meterhost"></div>
+    <details class="model"><summary>Show a Level 4 answer</summary>
+      <div class="mbody">${s.model}<p style="margin-top:12px;color:var(--muted);font-size:14px">${s.modelnote||""}</p></div></details>`;
+  const ta=box.querySelector("textarea"), counts=box.querySelector(".counts");
+  const upd=()=>{ const t=ta.value; counts.textContent=`${words(t)} words · ${sentences(t)} sentences`+(s.minWords?` · target ${s.minWords}+ words`:""); };
+  ta.addEventListener("input",upd); upd();
+  box.querySelector('[data-a="check"]').addEventListener("click",()=>{
+    const t=ta.value.trim();
+    if(words(t)<5){ box.querySelector(".meterhost").innerHTML=`<div class="why no"><b>Write a little more first.</b> The check needs at least a full sentence to read.</div>`; return; }
+    const rows=(s.needs||[]).map(k=>{ const d=SIGNALS[k]; return {label:d.label, ok:d.test(t), hint:d.hint}; });
+    const lenOk=!s.minWords||words(t)>=s.minWords;
+    const maxOk=!s.maxWords||words(t)<=s.maxWords;
+    if(s.minWords) rows.unshift({label:`Reaches ${s.minWords} words`, ok:lenOk, hint:`You are at ${words(t)}. Short answers cap at Level 3 even when every idea is right.`});
+    if(s.maxWords) rows.push({label:`Stays under ${s.maxWords} words`, ok:maxOk, hint:`You are at ${words(t)}. A summary that long is a retelling.`});
+    const hit=rows.filter(r=>r.ok).length;
+    const verdict = hit===rows.length ? "Every Level 4 signal is present" : hit>=rows.length-1 ? "One signal missing" : hit>=Math.ceil(rows.length/2) ? "Reads like a Level 3 answer" : "Most signals still missing";
+    box.querySelector(".meterhost").innerHTML=`<div class="meter">
+      <div class="mh"><span class="lab">Signal check</span><span class="verdict">${verdict}</span>
+        <span class="counts">${hit}/${rows.length}</span></div>
+      ${rows.map(r=>`<div class="sig ${r.ok?"on":"off"}"><span class="m">${r.ok?"✓":"○"}</span>
+        <span>${r.label}${r.ok?"":`<br><span style="font-size:13.5px">${r.hint}</span>`}</span></div>`).join("")}
+      <p class="counts" style="margin-top:4px">This is a writing-signal check, not an ELPA21 score. A rater reads for meaning as well; these are the features that are countable.</p>
+    </div>`;
+    if(!box.dataset.ans){ box.dataset.ans="1"; done(); }
+  });
+  return box;
+}
+
+/* ============================ figures ============================ */
+function SCENE(){ return `
+<svg viewBox="0 0 480 250" role="img" aria-label="Three students waiting at a bus stop in the rain. Two sit on a bench under a shelter, one stands in front of the bus stop sign holding an umbrella, and a backpack lies on the ground beside the bench.">
+  <rect x="0" y="0" width="480" height="250" fill="#C6D2E4"/>
+  <rect x="0" y="178" width="480" height="72" fill="#9FAFC2"/>
+  <rect x="0" y="178" width="480" height="6" fill="#8A9BB0"/>
+  <!-- shelter -->
+  <rect x="96" y="66" width="190" height="10" rx="3" fill="#36507A"/>
+  <rect x="100" y="76" width="6" height="104" fill="#4A648E"/>
+  <rect x="276" y="76" width="6" height="104" fill="#4A648E"/>
+  <rect x="106" y="80" width="170" height="72" fill="#B7C6DA" opacity=".55"/>
+  <!-- bench -->
+  <rect x="124" y="140" width="136" height="9" rx="3" fill="#7A5A33"/>
+  <rect x="124" y="124" width="136" height="7" rx="3" fill="#7A5A33"/>
+  <rect x="132" y="149" width="7" height="30" fill="#5E4526"/>
+  <rect x="245" y="149" width="7" height="30" fill="#5E4526"/>
+  <!-- seated student 1 -->
+  <circle cx="158" cy="106" r="13" fill="#C98C5E"/>
+  <path d="M145 140 q0-24 13-24 q13 0 13 24 z" fill="#2E6B57"/>
+  <rect x="146" y="140" width="10" height="34" rx="4" fill="#3B4A63"/>
+  <rect x="160" y="140" width="10" height="34" rx="4" fill="#3B4A63"/>
+  <!-- seated student 2 -->
+  <circle cx="214" cy="106" r="13" fill="#8A5B3C"/>
+  <path d="M201 140 q0-24 13-24 q13 0 13 24 z" fill="#B4493E"/>
+  <rect x="202" y="140" width="10" height="34" rx="4" fill="#2F3A4F"/>
+  <rect x="216" y="140" width="10" height="34" rx="4" fill="#2F3A4F"/>
+  <!-- bus stop sign -->
+  <rect x="340" y="72" width="6" height="108" fill="#5A6475"/>
+  <rect x="320" y="52" width="46" height="30" rx="4" fill="#1E2761"/>
+  <rect x="326" y="60" width="34" height="4" rx="2" fill="#C9A227"/>
+  <rect x="326" y="68" width="24" height="4" rx="2" fill="#C9A227"/>
+  <!-- standing student with umbrella -->
+  <circle cx="378" cy="108" r="13" fill="#E0B088"/>
+  <path d="M365 150 q0-28 13-28 q13 0 13 28 z" fill="#3E63A8"/>
+  <rect x="366" y="150" width="10" height="30" rx="4" fill="#2F3A4F"/>
+  <rect x="380" y="150" width="10" height="30" rx="4" fill="#2F3A4F"/>
+  <path d="M344 84 a34 26 0 0 1 68 0 z" fill="#2E6B9E"/>
+  <rect x="376" y="84" width="4" height="44" fill="#4A4A4A"/>
+  <!-- backpack -->
+  <rect x="272" y="156" width="30" height="24" rx="7" fill="#2F7A4F"/>
+  <rect x="277" y="162" width="20" height="9" rx="3" fill="#246340"/>
+  <!-- rain -->
+  <g stroke="#E6EDF7" stroke-width="2" stroke-linecap="round" opacity=".75">
+    <line x1="24" y1="16" x2="18" y2="34"/><line x1="62" y1="38" x2="56" y2="56"/>
+    <line x1="40" y1="90" x2="34" y2="108"/><line x1="74" y1="128" x2="68" y2="146"/>
+    <line x1="18" y1="140" x2="12" y2="158"/><line x1="306" y1="20" x2="300" y2="38"/>
+    <line x1="344" y1="24" x2="338" y2="42"/><line x1="420" y1="42" x2="414" y2="60"/>
+    <line x1="452" y1="90" x2="446" y2="108"/><line x1="410" y1="120" x2="404" y2="138"/>
+    <line x1="448" y1="150" x2="442" y2="168"/><line x1="150" y1="26" x2="144" y2="44"/>
+    <line x1="220" y1="18" x2="214" y2="36"/><line x1="258" y1="40" x2="252" y2="58"/>
+  </g>
+</svg>`;}
+
+function CHART(){
+  const vals=[{g:"Grade 9",v:38},{g:"Grade 10",v:46},{g:"Grade 11",v:55},{g:"Grade 12",v:61}];
+  const x0=54,x1=424,y0=196,top=26,maxv=70,ph=y0-top;
+  const sy=v=>y0-(v/maxv)*ph, slot=(x1-x0)/4, bw=56;
+  const grid=[0,20,40,60].map(g=>`<line x1="${x0}" y1="${sy(g).toFixed(1)}" x2="${x1}" y2="${sy(g).toFixed(1)}" stroke="var(--line)" stroke-width="1"/>
+    <text x="${x0-9}" y="${(sy(g)+4).toFixed(1)}" text-anchor="end" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--muted)">${g}</text>`).join("");
+  const bars=vals.map((d,i)=>{const bx=x0+i*slot+(slot-bw)/2, by=sy(d.v), bh=y0-by;
+    return `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw}" height="${bh.toFixed(1)}" rx="3" fill="var(--brand)"/>
+      <rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw}" height="4" rx="2" fill="var(--accent)"/>
+      <text x="${(bx+bw/2).toFixed(1)}" y="${(by-8).toFixed(1)}" text-anchor="middle" font-size="12.5" font-family="IBM Plex Mono, monospace" font-weight="600" fill="var(--ink)">${d.v}%</text>
+      <text x="${(bx+bw/2).toFixed(1)}" y="${y0+18}" text-anchor="middle" font-size="11.5" font-family="Inter, sans-serif" fill="var(--muted)">${d.g}</text>`;}).join("");
+  return `<svg viewBox="0 0 448 236" role="img" aria-label="Bar chart. Students reporting fewer than seven hours of sleep: grade 9, 38 percent; grade 10, 46 percent; grade 11, 55 percent; grade 12, 61 percent.">
+    <text x="0" y="13" font-size="13" font-family="Inter, sans-serif" font-weight="600" fill="var(--ink)">Students reporting fewer than 7 hours of sleep</text>
+    ${grid}
+    <line x1="${x0}" y1="${top}" x2="${x0}" y2="${y0}" stroke="var(--muted)" stroke-width="1"/>
+    <line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" stroke="var(--muted)" stroke-width="1"/>
+    ${bars}
+    <text x="0" y="${top-4}" font-size="10.5" font-family="IBM Plex Mono, monospace" fill="var(--muted)">% OF STUDENTS</text>
+  </svg>`;
+}
+
+/* ============================ router ============================ */
+function route(){
+  const h=(location.hash||"").replace(/^#/,"").toLowerCase();
+  const t=TASKS.find(x=>x.id===h);
+  if(t) renderTask(t); else renderHome();
+}
+window.addEventListener("hashchange",route);
+document.getElementById("reset").addEventListener("click",()=>{
+  state={done:{}}; save(); route(); renderChips();
+});
+route();
+renderChips();
+</script>
+</body>
+</html>
