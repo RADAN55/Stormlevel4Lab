@@ -15,6 +15,12 @@ Not a practice test. A set of drills on the behavior an ELPA21 rater is actually
 Each task names its 3 → 4 move up front, then makes the student perform it, and the feedback
 explains the move rather than just marking the answer right or wrong.
 
+Every task opens with its **domain coach** — an original animated character who explains the
+task, names the move, and gives one concrete tip before the student starts. Four coaches, one
+per domain: Coach Okonjo (Reading), Coach Delgado (Writing), Coach Tran (Listening), and
+Coach Bell (Speaking). Each coaching script plays in English or Spanish with the device voice,
+and the full text is on screen either way.
+
 ELPA21 reports a student Proficient when the score profile reaches Level 4 or higher in every
 domain, so one domain stuck at Level 3 holds the whole profile back. Eight of the twelve tasks
 sit in Reading and Writing.
@@ -51,7 +57,8 @@ sit in Reading and Writing.
 
 ## How students use it
 
-- Open the site, pick a task from the grid. Progress saves in that browser only.
+- Open the site, pick a task from the grid. The coach speaks first. Progress saves in that
+  browser only.
 - **Reading and listening** items give instant feedback that explains the move.
 - **Writing** tasks run a live signal check — claim marker, named source, concession, connective
   count, sentence count, length — then show a Level 4 model with the moves highlighted.
@@ -60,7 +67,11 @@ sit in Reading and Writing.
   behaviors, then a model answer. Nothing is recorded in the browser; pair it with
   Flashlight360 or a partner if you want recorded evidence.
 - **Listening** uses the device voice, with a **Show the script** button beside Play and an
-  automatic fallback to the script if speech is blocked on the device or network.
+  automatic fallback to the script if speech is blocked on the device or network. The coaches
+  work the same way: if no voice is available the script is already written in the bubble, so
+  nothing is lost on a locked-down Chromebook.
+- **En español** on every coach swaps the instructions to Spanish, spoken and written. The
+  passages themselves stay in English, the way the test is.
 
 Chromebook friendly. No account, no sign-in, no data leaves the device.
 
@@ -72,6 +83,8 @@ Chromebook friendly. No account, no sign-in, no data leaves the device.
   read with them first.
 - The model answers are the most useful part for whole-class work — project one and ask the
   class to find the four things the rater is counting.
+- The coaches are original illustrations drawn in SVG inside `index.html`. They are not real
+  staff and are not photographs of anyone.
 
 ## Practice content
 

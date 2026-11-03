@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12, each built around one move that separates a Level 3 answer from a Level 4 answer. EL Publishing / Storm Studio.">
+<meta name="description" content="Twelve interactive ELPA21 tasks for grades 9-12 with four animated domain coaches, each built around one move that separates a Level 3 answer from a Level 4 answer. EL Publishing / Storm Studio.">
 <meta name="author" content="Richard A. Daniel, M.Ed. - EL Publishing">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E2761'/%3E%3Crect x='9' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='20' y='6' width='3' height='20' rx='1.5' fill='%23C9A227'/%3E%3Crect x='11' y='20' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='15' width='10' height='2.6' rx='1.3' fill='%23C9A227'/%3E%3Crect x='11' y='10' width='10' height='2.6' rx='1.3' fill='%23F3F4FA'/%3E%3C/svg%3E">
 <style>
@@ -189,6 +189,26 @@ textarea:focus{border-color:var(--accent)}
 .donebar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--good-bg);border:1px solid var(--good);border-radius:var(--r);padding:14px 16px;margin-top:18px}
 .donebar p{font-size:14.5px;color:var(--ink)}
 .donebar .lab{color:var(--good)}
+/* ---------- coaches ---------- */
+.coach{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:16px}
+.coachfig{width:86px;flex:none}
+.coachfig svg{display:block;width:100%;height:auto}
+.bubble{flex:1 1 auto;min-width:0}
+.who{font-family:var(--data);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);font-weight:600;display:block;margin-bottom:5px}
+.says{font-size:15.5px;line-height:1.62;max-width:62ch}
+.coachrow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:11px}
+.coachrow .btn{padding:7px 13px;font-size:13.5px}
+.mini{width:36px;height:36px;flex:none;align-self:center;border-radius:8px;overflow:hidden}
+.mini svg{display:block;width:100%;height:auto}
+.c-bob{transform-box:fill-box;transform-origin:50% 92%;animation:bob 4.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-1.5px) rotate(-.7deg)}}
+.c-eye{transform-box:fill-box;transform-origin:center;animation:blink 5.6s infinite}
+@keyframes blink{0%,95%,100%{transform:scaleY(1)}97.5%{transform:scaleY(.12)}}
+.c-mouth{transform-box:fill-box;transform-origin:center}
+.talking .c-mouth{animation:talk .26s ease-in-out infinite alternate}
+@keyframes talk{from{transform:scaleY(.45)}to{transform:scaleY(1.5)}}
+.talking .c-bob{animation-duration:2.2s}
+@media (max-width:460px){.coach{gap:10px;padding:12px}.coachfig{width:62px}}
 footer{border-top:1px solid var(--line);margin-top:10px}
 footer .wrap{padding-block:22px 34px;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;max-width:var(--maxw)}
 @media (max-width:560px){
@@ -565,6 +585,138 @@ steps:[
 const BY_DOMAIN={};
 TASKS.forEach(t=>{ (BY_DOMAIN[t.domain]=BY_DOMAIN[t.domain]||[]).push(t); });
 
+/* ============================ coaches ============================ */
+const COACHES={
+  reading:{name:"Coach Okonjo", skin:"#6B4226", shade:"#55341D", hair:"#15100D", shirt:"#2A6A68", collar:"#1F5250", panel:"#DDEAE9", acc:"glasses"},
+  writing:{name:"Coach Delgado", skin:"#C98C5E", shade:"#A9714A", hair:"#2B1C12", shirt:"#2F4B8A", collar:"#24396B", panel:"#E0E6F4", acc:"pencil"},
+  listening:{name:"Coach Tran", skin:"#E3BE97", shade:"#C79F79", hair:"#171311", shirt:"#8E3B4E", collar:"#702E3D", panel:"#F3E1E5", acc:"headphones"},
+  speaking:{name:"Coach Bell", skin:"#8A5B3C", shade:"#6E472D", hair:"#1A1512", shirt:"#2F7A52", collar:"#246040", panel:"#DFEEE4", acc:"whistle"}
+};
+const HAIR={
+  reading:`<path d="M28 47 a22 17 0 0 1 44 0 q-4-19-22-19 q-18 0-22 19z" fill="HAIR"/>`,
+  writing:`<path d="M29 46 q1-24 21-24 q20 0 21 24 q-6-13-21-13 q-15 0-21 13z" fill="HAIR"/>
+           <path d="M31 53 q1 23 19 23 q18 0 19-23 q-5 13-19 13 q-14 0-19-13z" fill="HAIR" opacity=".93"/>`,
+  listening:`<path d="M27 48 q0-26 23-26 q23 0 23 26 l0 19 q-3-5-4-13 q-7 5-19 5 q-12 0-19-5 q-1 8-4 13z" fill="HAIR"/>`,
+  speaking:`<path d="M30 45 q2-23 20-23 q18 0 20 23 q-7-12-20-12 q-13 0-20 12z" fill="HAIR"/>`
+};
+const ACC={
+  glasses:`<g fill="none" stroke="#23262E" stroke-width="1.7"><rect x="33.5" y="42.5" width="14" height="10" rx="4.5"/><rect x="52.5" y="42.5" width="14" height="10" rx="4.5"/><path d="M47.5 47h5"/><path d="M33.5 46l-5 2"/><path d="M66.5 46l5 2"/></g>`,
+  pencil:`<g transform="rotate(-20 69 42)"><rect x="66.5" y="34" width="4.4" height="14" rx="1.2" fill="#C9A227"/><path d="M66.5 34l2.2-3.4 2.2 3.4z" fill="#F0E2B6"/><rect x="66.5" y="45" width="4.4" height="3" fill="#8C6F17"/></g>`,
+  headphones:`<path d="M26 50a24 24 0 0 1 48 0" fill="none" stroke="#3A3F4D" stroke-width="3.6" stroke-linecap="round"/>
+              <rect x="22" y="46" width="9.5" height="15" rx="4.5" fill="#3A3F4D"/><rect x="68.5" y="46" width="9.5" height="15" rx="4.5" fill="#3A3F4D"/>`,
+  whistle:`<path d="M41 76q9 11 18 0" fill="none" stroke="#C9A227" stroke-width="2.2"/><rect x="46.5" y="82" width="8" height="5.5" rx="2" fill="#C9A227"/>`
+};
+function coachSVG(key){
+  const c=COACHES[key];
+  return `<svg viewBox="0 0 100 100" role="img" aria-label="Illustration of ${c.name}">
+    <rect width="100" height="100" rx="12" fill="${c.panel}"/>
+    <g class="c-bob">
+      <path d="M14 100q0-25 36-25t36 25z" fill="${c.shirt}"/>
+      <path d="M43 76l7 9 7-9q-7-3-14 0z" fill="${c.collar}"/>
+      <rect x="44" y="60" width="12" height="13" rx="5" fill="${c.shade}"/>
+      <ellipse cx="50" cy="47" rx="20" ry="23" fill="${c.skin}"/>
+      ${HAIR[key].replace(/HAIR/g,c.hair)}
+      <ellipse class="c-eye" cx="42.5" cy="48" rx="2.5" ry="3" fill="#1C1A19"/>
+      <ellipse class="c-eye" cx="57.5" cy="48" rx="2.5" ry="3" fill="#1C1A19"/>
+      <path d="M38.5 42.5q4-2 8 0M53.5 42.5q4-2 8 0" fill="none" stroke="${c.hair}" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M50 51v4.5" fill="none" stroke="${c.shade}" stroke-width="1.6" stroke-linecap="round"/>
+      <ellipse class="c-mouth" cx="50" cy="60" rx="5.2" ry="2.6" fill="#7B3A38"/>
+      ${ACC[c.acc]}
+    </g></svg>`;
+}
+const COACH_SCRIPT={
+ r1:{en:"Welcome to Prove It. Most of you can already choose the right answer. Here you have to do one more thing: find the exact sentence in the passage that makes your answer true. Read the question, choose, then go back and hunt for the line. If you cannot find a line, your answer is a guess.",
+     es:"Bienvenidos a Prove It. Casi todos ya pueden escoger la respuesta correcta. Aquí tienen que hacer algo más: encontrar la oración exacta del texto que comprueba su respuesta. Lean la pregunta, escojan, y luego regresen a buscar la oración. Si no la encuentran, su respuesta es solo una suposición."},
+ r2:{en:"In this task you meet three hard words and one tricky pronoun. Do not reach for a translator. The writer almost always explains a hard word in the sentence right before it or right after it. For the pronoun question, walk backward until you find the last thing the writer was talking about.",
+     es:"En esta tarea hay tres palabras difíciles y un pronombre complicado. No usen el traductor. El escritor casi siempre explica la palabra difícil en la oración de antes o la de después. Para el pronombre, regresen hasta encontrar lo último de que hablaba el autor."},
+ r3:{en:"This passage gives two solutions to the same problem. The questions are not about facts. They ask what each paragraph is doing: introducing, comparing, or answering an objection. Mark the signal words as you read. But, although, however. Those words tell you the writer is turning.",
+     es:"Este texto presenta dos soluciones al mismo problema. Las preguntas no son de detalles. Preguntan qué hace cada párrafo: presentar, comparar o responder una objeción. Marquen las palabras clave mientras leen: but, although, however. Avisan que el autor va a cambiar de dirección."},
+ r4:{en:"Two documents, an email and a notice. On the test, when you see two texts, expect at least one question that neither text can answer alone. Read both before you start, and keep scrolling back. The answer lives in the space between them.",
+     es:"Dos documentos: un correo y un anuncio. En el examen, cuando hay dos textos, siempre hay una pregunta que ningún texto puede contestar solo. Lean los dos antes de empezar y regresen a revisarlos. La respuesta está en la combinación de ambos."},
+ w1:{en:"We are building sentences one word at a time. Anyone can join two ideas with and. A Level 4 writer picks the word that shows the relationship: because for a cause, although for a contrast, if for a condition. Tap the words, read your sentence out loud, then check it.",
+     es:"Hoy construimos oraciones, palabra por palabra. Cualquiera puede unir dos ideas con and. Un escritor de nivel cuatro escoge la palabra que muestra la relación: because para causa, although para contraste, if para condición. Lean su oración en voz alta antes de revisar."},
+ w2:{en:"Look at the picture for thirty seconds before you write anything. Then ask two questions: where is each thing, and what is happening right now. Those two questions are the whole task. Four sentences is the floor, not the goal.",
+     es:"Miren el dibujo treinta segundos antes de escribir. Luego háganse dos preguntas: ¿dónde está cada cosa? y ¿qué está pasando en este momento? Esas dos preguntas son toda la tarea. Cuatro oraciones es el mínimo, no la meta."},
+ w3:{en:"Same message, different reader. You would text a friend one way and write an assistant principal another way. Two frames carry you through almost any formal email: I am writing to ask, and would it be possible. Greeting, reason, closing. Every time.",
+     es:"El mismo mensaje, pero otro lector. A un amigo le escriben de una manera y a un subdirector de otra. Dos frases les sirven para casi cualquier correo formal: I am writing to ask y would it be possible. Saludo, razón, despedida. Siempre."},
+ w4:{en:"This is the hardest writing task on the test and it is worth the most. Read both sources. Take a side in your first sentence. Use evidence from Source A and Source B by name. And here is the part people skip: give one honest reason someone might disagree with you. Leaving that out is why strong opinions score a three.",
+     es:"Esta es la tarea de escritura más difícil del examen, y la que más vale. Lean las dos fuentes. Tomen una posición en la primera oración. Usen evidencia de la fuente A y de la fuente B, nombrándolas. Y lo que muchos olvidan: den una razón honesta por la cual alguien podría no estar de acuerdo. Por eso una opinión fuerte se queda en nivel tres."},
+ l1:{en:"You will hear a school announcement, the way you would on the test. Do not only catch the details. Ask yourself why this person is speaking at all. If the audio does not play on your device, press Show the script and read it. That is not cheating, it is practice.",
+     es:"Van a escuchar un anuncio escolar, como en el examen. No se queden solo con los detalles. Pregúntense por qué habla esta persona. Si el audio no funciona en su aparato, usen el botón Show the script y lean el texto. Eso no es hacer trampa, es practicar."},
+ l2:{en:"A short talk about levees, then one job: say the whole thing back in one sentence. Too short and you lose the reason. Too long and you are retelling, not summarizing. Aim for fifteen to thirty words, with because in the middle.",
+     es:"Una charla corta sobre los diques, y una sola tarea: resumir todo en una oración. Muy corta y pierden la razón. Muy larga y ya no es resumen. Apunten a quince o treinta palabras, con because en el medio."},
+ s1:{en:"Forty-five seconds on the clock. Most students read the numbers and stop at twenty seconds. Do not do that. Say what the graph measures, give two numbers, compare two grades out loud, then say what you think it means. The last part is where the points are.",
+     es:"Cuarenta y cinco segundos en el reloj. La mayoría lee los números y se detiene a los veinte segundos. No hagan eso. Digan qué mide la gráfica, den dos números, comparen dos grados en voz alta, y digan qué significa. La última parte es la que más vale."},
+ s2:{en:"Sixty seconds, and a good answer uses almost all of them. Position first. Then first, reason one. Second, reason two. Then although, and the other side. Practice that shape out loud ten times and it will be there on test day.",
+     es:"Sesenta segundos, y una buena respuesta usa casi todos. Primero la posición. Luego first con la primera razón, second con la segunda. Después although y el otro punto de vista. Practiquen esa estructura en voz alta diez veces y la tendrán el día del examen."}
+};
+
+/* ============================ speech ============================ */
+const Speech={
+  voices:[],
+  load(){ try{ this.voices=(window.speechSynthesis&&speechSynthesis.getVoices())||[]; }catch(e){ this.voices=[]; } },
+  pick(lang){
+    const p=lang==="es"?"es":"en", v=this.voices;
+    return v.find(x=>x.lang&&x.lang.toLowerCase().indexOf(p)===0&&x.localService)
+        || v.find(x=>x.lang&&x.lang.toLowerCase().indexOf(p)===0) || null;
+  },
+  stop(){ try{ speechSynthesis.cancel(); }catch(e){}
+    document.querySelectorAll(".talking").forEach(x=>x.classList.remove("talking")); },
+  speak(text,lang,stat,fig,onFail){
+    const fail=m=>{ if(stat) stat.textContent=m; if(fig) fig.classList.remove("talking"); if(onFail) onFail(); };
+    if(!window.speechSynthesis) return fail("no voice on this device — read the text");
+    try{
+      speechSynthesis.cancel(); this.load();
+      const parts=(text.match(/[^.?!]+[.?!]*/g)||[text]).map(s=>s.trim()).filter(Boolean);
+      let n=0, started=false;
+      if(fig) fig.classList.add("talking");
+      if(stat) stat.textContent="playing";
+      parts.forEach(p=>{
+        const u=new SpeechSynthesisUtterance(p);
+        u.lang = lang==="es" ? "es-ES" : "en-US";
+        u.rate = lang==="es" ? .95 : .92;
+        const v=this.pick(lang); if(v) u.voice=v;
+        u.onstart=()=>{ started=true; };
+        u.onend=()=>{ n++; if(n>=parts.length){ if(stat) stat.textContent="finished"; if(fig) fig.classList.remove("talking"); } };
+        u.onerror=()=>fail("voice blocked — read the text");
+        speechSynthesis.speak(u);
+      });
+      setTimeout(()=>{ if(!started && !speechSynthesis.speaking) fail("no sound — read the text"); },1600);
+    }catch(e){ fail("no sound — read the text"); }
+  }
+};
+Speech.load();
+if(window.speechSynthesis){ try{ speechSynthesis.onvoiceschanged=()=>Speech.load(); }catch(e){} }
+
+function renderCoach(t){
+  const c=COACHES[t.domain], s=COACH_SCRIPT[t.id], box=document.getElementById("coachbox");
+  if(!box||!s) return;
+  box.innerHTML=`<div class="coachfig">${coachSVG(t.domain)}</div>
+    <div class="bubble">
+      <span class="who">${c.name} · ${DOMAINS[t.domain].name} coach</span>
+      <p class="says"></p>
+      <div class="coachrow">
+        <button class="btn" type="button" data-a="p">▶ Hear the coach</button>
+        <button class="btn ghost" type="button" data-a="s">Stop</button>
+        <button class="btn ghost" type="button" data-a="l">En español</button>
+        <span class="astat">Everything the coach says is written here too.</span>
+      </div>
+    </div>`;
+  const says=box.querySelector(".says"), stat=box.querySelector(".astat"), fig=box.querySelector(".coachfig");
+  const bl=box.querySelector('[data-a="l"]');
+  let lang="en";
+  says.textContent=s.en;
+  bl.addEventListener("click",()=>{
+    Speech.stop();
+    lang = lang==="en" ? "es" : "en";
+    says.textContent = s[lang];
+    bl.textContent = lang==="en" ? "En español" : "In English";
+    stat.textContent="Everything the coach says is written here too.";
+  });
+  box.querySelector('[data-a="p"]').addEventListener("click",()=>Speech.speak(s[lang],lang,stat,fig));
+  box.querySelector('[data-a="s"]').addEventListener("click",()=>{ Speech.stop(); stat.textContent=""; });
+}
+
 /* ============================ chips ============================ */
 function ring(frac){
   const r=7,c=2*Math.PI*r;
@@ -596,6 +748,7 @@ function renderHome(){
     const d=DOMAINS[k];
     return `<section>
       <div class="secthead">
+        <span class="mini">${coachSVG(k)}</span>
         <h2>${d.name}</h2>
         ${d.gate?'<span class="lab gatetag">exit gate</span>':''}
         <span class="lab">${(BY_DOMAIN[k]||[]).length} tasks</span>
@@ -626,9 +779,11 @@ function renderTask(t){
       <div class="movebox"><span class="lab">The 3 → 4 move</span><p>${t.move}</p></div>
       <p class="spec">${t.spec}</p>
     </div>
+    <div class="coach" id="coachbox"></div>
     <div id="steps"></div>
     <div id="donebar"></div>`;
-  document.getElementById("back").addEventListener("click",()=>{location.hash="";});
+  document.getElementById("back").addEventListener("click",()=>{ Speech.stop(); location.hash=""; });
+  renderCoach(t);
   const host=document.getElementById("steps");
   const interactive=t.steps.filter(s=>s.type!=="read"&&s.type!=="listen"&&s.type!=="figure");
   let answered=0;
@@ -680,10 +835,6 @@ function buildStep(s,i,done){
 }
 
 /* ---- listening ---- */
-let voices=[];
-function loadVoices(){ try{ voices=window.speechSynthesis?speechSynthesis.getVoices():[]; }catch(e){ voices=[]; } }
-loadVoices();
-if(window.speechSynthesis) try{ speechSynthesis.onvoiceschanged=loadVoices; }catch(e){}
 function buildListen(box,s){
   box.innerHTML=`<span class="lab">Listening · ${s.title}</span>
     <div class="audio">
@@ -699,26 +850,12 @@ function buildListen(box,s){
     script.hidden=!script.hidden;
     e.target.textContent=script.hidden?"Show the script":"Hide the script";
   });
-  box.querySelector('[data-a="stop"]').addEventListener("click",()=>{ try{speechSynthesis.cancel();}catch(e){} stat.textContent=""; });
+  box.querySelector('[data-a="stop"]').addEventListener("click",()=>{ Speech.stop(); stat.textContent=""; });
   box.querySelector('[data-a="play"]').addEventListener("click",()=>{
-    if(!window.speechSynthesis){ stat.textContent="No voice on this device — use the script"; script.hidden=false; return; }
-    try{
-      speechSynthesis.cancel();
-      loadVoices();
-      const parts=s.script.split(/(?<=[.?!])\s+/);
-      let n=0;
-      stat.textContent="playing";
-      parts.forEach(p=>{
-        const u=new SpeechSynthesisUtterance(p);
-        u.rate=.92; u.lang="en-US";
-        const v=voices.find(x=>x.lang&&x.lang.indexOf("en")===0&&x.localService)||voices.find(x=>x.lang&&x.lang.indexOf("en")===0);
-        if(v) u.voice=v;
-        u.onend=()=>{ n++; if(n>=parts.length) stat.textContent="finished"; };
-        u.onerror=()=>{ stat.textContent="voice blocked — use the script"; script.hidden=false; };
-        speechSynthesis.speak(u);
-      });
-      setTimeout(()=>{ if(stat.textContent==="playing"&&!speechSynthesis.speaking){ stat.textContent="no sound — use the script"; script.hidden=false; } },1400);
-    }catch(e){ stat.textContent="no sound — use the script"; script.hidden=false; }
+    Speech.speak(s.script,"en",stat,null,()=>{
+      script.hidden=false;
+      const b=box.querySelector('[data-a="show"]'); if(b) b.textContent="Hide the script";
+    });
   });
   return box;
 }
@@ -973,6 +1110,7 @@ function CHART(){
 
 /* ============================ router ============================ */
 function route(){
+  Speech.stop();
   const h=(location.hash||"").replace(/^#/,"").toLowerCase();
   const t=TASKS.find(x=>x.id===h);
   if(t) renderTask(t); else renderHome();
